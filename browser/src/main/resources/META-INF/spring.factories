@@ -1,0 +1,5 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.security.core.autoconfig.AutoConfig,\
+com.security.browser.config.BrowserSecurityConfigurer,\
+com.security.browser.config.BrowserBeanConfig,\
+com.security.browser.config.BrowserRequestProvider
