@@ -2,8 +2,6 @@ package com.security.core.autoconfig;
 
 import java.util.Set;
 import javax.sql.DataSource;
-
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -23,14 +21,14 @@ public class AutoConfig {
 
 	@Bean
 	@ConfigurationProperties(prefix = "security.login")
-	@ConditionalOnProperty(prefix = "security.login", name = { "page", "processingUrl", "usernameParameter", "passwordParameter" })
+	@ConditionalOnProperty(prefix = "security.login", name = { "page", "processing-url", "username-uarameter", "password-uarameter" })
 	public LoginProperties loginProperties() {
 		return new LoginProperties();
 	}
 	
 	@Bean
 	@ConfigurationProperties(prefix = "security.logout")
-	@ConditionalOnProperty(prefix = "security.logout", name = { "url" })
+	@ConditionalOnProperty(prefix = "security.logout", name = "url")
 	public LogoutProperties logoutProperties() {
 		return new LogoutProperties();
 	}
@@ -42,7 +40,15 @@ public class AutoConfig {
 	}
 	
 	@Bean
-	@ConditionalOnBean(DataSource.class)
+	@ConfigurationProperties(prefix = "security.remember-me")
+	@ConditionalOnProperty(prefix = "security.remember-me", name = "token-validity-seconds")
+	public RememberMeProperties rememberMeProperties() {
+		return new RememberMeProperties();
+	}
+	
+	@Bean
+	@ConditionalOnClass(DataSource.class)
+	@ConditionalOnProperty(prefix = "security.remember-me", name = "token-validity-seconds")
 	public PersistentTokenRepository persistentTokenRepository(DataSource dataSource) {
 		JdbcTokenRepositoryImpl jdbcTokenRepository = new JdbcTokenRepositoryImpl();
 		jdbcTokenRepository.setDataSource(dataSource);

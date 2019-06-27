@@ -11,10 +11,12 @@ import org.springframework.security.config.annotation.web.configurers.SessionMan
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.security.web.session.InvalidSessionStrategy;
 import org.springframework.security.web.session.SessionInformationExpiredStrategy;
 import com.security.core.autoconfig.LoginProperties;
 import com.security.core.autoconfig.LogoutProperties;
+import com.security.core.autoconfig.RememberMeProperties;
 import com.security.core.autoconfig.SessionProperties;
 import com.security.core.request.RequestManager;
 
@@ -29,6 +31,12 @@ public class BrowserSecurityConfigurer extends WebSecurityConfigurerAdapter {
 	
 	@Autowired(required = false)
 	private LogoutProperties logoutProperties;
+	
+	@Autowired(required = false)
+	private RememberMeProperties rememberMeProperties;
+	
+	@Autowired(required = false)
+	private PersistentTokenRepository persistentTokenRepository;
 	
 	@Autowired
 	private SessionProperties sessionProperties;
@@ -55,8 +63,17 @@ public class BrowserSecurityConfigurer extends WebSecurityConfigurerAdapter {
 		loginConfigure(http.formLogin());
 		logoutConfigure(http.logout());
 		sessionConfigure(http.sessionManagement());
+		rememberMeConfigure(http);
 	}
 	
+	private void rememberMeConfigure(HttpSecurity http) throws Exception {
+		if (rememberMeProperties != null) {
+			http.rememberMe()
+			    .tokenRepository(persistentTokenRepository)
+			    .tokenValiditySeconds(rememberMeProperties.getTokenValiditySeconds());             
+		}
+	}
+
 	private void sessionConfigure(SessionManagementConfigurer<HttpSecurity> configurer) {
 		@SuppressWarnings("rawtypes")
 		ConcurrencyControlConfigurer controlConfigurer = configurer.maximumSessions(sessionProperties.getMaximum()).maxSessionsPreventsLogin(sessionProperties.isMaxSessionsPreventsLogin());
