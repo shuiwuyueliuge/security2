@@ -1,38 +1,28 @@
-package org.demo;
+package com.security.core.autoconfig;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.cache.annotation.EnableCaching;
+//import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+//import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
-
-import com.security.core.enable.EnableImgCode;
 import com.security.core.validatecode.VaildateCodeFailureHandler;
 import com.security.core.validatecode.ValidateCodeGenerator;
 import com.security.core.validatecode.ValidateCodeManager;
 import com.security.core.validatecode.simple.SimpleImgValidateCodeGenerator;
 import com.security.core.validatecode.simple.SimpleValidateCodeManager;
 
-@SpringBootApplication
-@EnableCaching
-@EnableImgCode
-public class App {
-	
-	public static void main(String[] args) {
-		SpringApplication.run(App.class, args);
+//@ConditionalOnProperty(prefix = "security.simple-validate-code", name = "enable", havingValue = "true")
+public class SimpleValidateCodeConfig {
+
+	@Bean
+	public ValidateCodeGenerator img(ValidateCodeManager manager) {
+		return new SimpleImgValidateCodeGenerator(manager);
 	}
 	
-	//@Bean
+	@Bean
 	public ValidateCodeManager codeManager() {
 		return new SimpleValidateCodeManager();
 	}
 	
-	//@Bean
-	public ValidateCodeGenerator img2(ValidateCodeManager manager) {
-		return new SimpleImgValidateCodeGenerator(manager);
-	}
-	
-	//@Bean
+	@Bean
 	public VaildateCodeFailureHandler codeFailureHandler() {
 		return (request, response, exception) -> {
 			response.getWriter().write("Vaildate Code Failure");
