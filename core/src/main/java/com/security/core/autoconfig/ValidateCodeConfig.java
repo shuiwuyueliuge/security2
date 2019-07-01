@@ -4,6 +4,11 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+
+import com.security.core.expand.SmsConfigurerAdapter;
 import com.security.core.expand.ValidateConfigurerAdapter;
 import com.security.core.validatecode.DefaultValidateCodeGeneratorHolder;
 import com.security.core.validatecode.VaildateCodeFailureHandler;
@@ -23,6 +28,12 @@ public class ValidateCodeConfig {
 	
 	@Autowired(required = false)
 	private ValidateCodeManager validateCodeManager;
+	
+	@Autowired(required = false)
+	private AuthenticationSuccessHandler success;
+	
+	@Autowired(required = false)
+	private AuthenticationFailureHandler failer;
 
 	@Bean
 	public ValidateCodeGeneratorHolder generatorHolder(Map<String, ValidateCodeGenerator> generators) {
@@ -37,5 +48,10 @@ public class ValidateCodeConfig {
 		adapter.setFailHandler(failHandler);
 		adapter.setHolder(holder);
 		return adapter;
+	}
+	
+	@Bean
+	public SmsConfigurerAdapter smsConfigurerAdapter(UserDetailsService user) {
+		return new SmsConfigurerAdapter(success, failer, user);
 	}
 }

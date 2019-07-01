@@ -18,6 +18,7 @@ import com.security.core.autoconfig.LoginProperties;
 import com.security.core.autoconfig.LogoutProperties;
 import com.security.core.autoconfig.RememberMeProperties;
 import com.security.core.autoconfig.SessionProperties;
+import com.security.core.expand.SmsConfigurerAdapter;
 import com.security.core.expand.ValidateConfigurerAdapter;
 import com.security.core.request.RequestManager;
 
@@ -60,6 +61,9 @@ public class BrowserSecurityConfigurer extends WebSecurityConfigurerAdapter {
 	@Autowired(required = false)
 	private ValidateConfigurerAdapter validateConfigurerAdapter;
 	
+	@Autowired(required = false)
+	private SmsConfigurerAdapter smsConfigurerAdapter;
+	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		requestManager.config(http.authorizeRequests());
@@ -70,6 +74,10 @@ public class BrowserSecurityConfigurer extends WebSecurityConfigurerAdapter {
 		rememberMeConfigure(http);
 		if (validateConfigurerAdapter != null) {
 			http.apply(validateConfigurerAdapter);
+		}
+		
+		if (smsConfigurerAdapter != null) {
+			http.apply(smsConfigurerAdapter);
 		}
 	}
 	
