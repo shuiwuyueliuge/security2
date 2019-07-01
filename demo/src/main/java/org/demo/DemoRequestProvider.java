@@ -11,6 +11,6 @@ public class DemoRequestProvider implements RequestProvider {
 
 	@Override
 	public void config(ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry registry) {
-		registry.antMatchers("/login.html", "/login", "/session/delete", "/code/**", "/code/result").permitAll();
+		registry.antMatchers("/code/**", "/code/result").permitAll();
 	}
 }

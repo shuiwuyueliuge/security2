@@ -1,27 +1,31 @@
 package com.security.core.validatecode.simple;
 
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
-import org.springframework.cache.annotation.Cacheable;
+import java.util.Collections;
+import java.util.Map;
+import java.util.WeakHashMap;
 import com.security.core.validatecode.ValidateCodeManager;
 
 public class SimpleValidateCodeManager implements ValidateCodeManager {
+	
+	private static Map<String, String> cacheMap;
+	
+	static {
+		cacheMap = Collections.synchronizedMap(new WeakHashMap<String, String>());
+	}
 
 	@Override
-	@CachePut(value = "validateCodeCache", key = "#key")
 	public String save(String key, String code) {
+		cacheMap.put(key, code);
 		return code;
 	}
 
 	@Override
-	@Cacheable(value = "validateCodeCache", key = "#key")
 	public String get(String key) {
-		return null;
+		return cacheMap.get(key);
 	}
 
 	@Override
-	@CacheEvict(value = "validateCodeCache", key = "#key")
 	public String remove(String key) {
-		return null;
+		return cacheMap.remove(key);
 	}
 }

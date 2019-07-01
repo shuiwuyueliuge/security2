@@ -18,6 +18,7 @@ import com.security.core.autoconfig.LoginProperties;
 import com.security.core.autoconfig.LogoutProperties;
 import com.security.core.autoconfig.RememberMeProperties;
 import com.security.core.autoconfig.SessionProperties;
+import com.security.core.expand.ValidateConfigurerAdapter;
 import com.security.core.request.RequestManager;
 
 @EnableWebSecurity
@@ -56,6 +57,9 @@ public class BrowserSecurityConfigurer extends WebSecurityConfigurerAdapter {
 	@Autowired(required = false)
 	private InvalidSessionStrategy invalidSessionStrategy;
 	
+	@Autowired(required = false)
+	private ValidateConfigurerAdapter validateConfigurerAdapter;
+	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		requestManager.config(http.authorizeRequests());
@@ -64,6 +68,9 @@ public class BrowserSecurityConfigurer extends WebSecurityConfigurerAdapter {
 		logoutConfigure(http.logout());
 		sessionConfigure(http.sessionManagement());
 		rememberMeConfigure(http);
+		if (validateConfigurerAdapter != null) {
+			http.apply(validateConfigurerAdapter);
+		}
 	}
 	
 	private void rememberMeConfigure(HttpSecurity http) throws Exception {

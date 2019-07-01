@@ -10,6 +10,6 @@ import com.security.core.autoconfig.ValidateCodeConfig;
 @Retention(RUNTIME)
 @Target(TYPE)
 @Import(ValidateCodeConfig.class)
-public @interface EnableImgCode {
+public @interface EnableValidateCode {
 
 }

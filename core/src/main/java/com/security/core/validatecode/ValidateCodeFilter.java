@@ -8,7 +8,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.web.filter.OncePerRequestFilter;
-
 import com.security.core.exception.ValidateCodeException;
 
 public class ValidateCodeFilter extends OncePerRequestFilter {
@@ -51,7 +50,7 @@ public class ValidateCodeFilter extends OncePerRequestFilter {
 		
 		return true;
 	}
-	
+
 	private String getRequestURI(HttpServletRequest request) {
 		return request.getRequestURI();
 	}

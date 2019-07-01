@@ -31,6 +31,6 @@ public class SimpleImgValidateCodeGenerator extends CachedValidateCodeGenerator 
 
 	@Override
 	protected String generate(String key, HttpServletRequest request) {
-		return RandomUtil.validateCoed(6);
+		return RandomUtil.validateCoed(4);
 	}
 }
