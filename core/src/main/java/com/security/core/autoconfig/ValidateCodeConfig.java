@@ -47,6 +47,7 @@ public class ValidateCodeConfig {
 		adapter.setLoginPage(loginProperties);
 		adapter.setFailHandler(failHandler);
 		adapter.setHolder(holder);
+		adapter.setLoginUrl(loginProperties);
 		return adapter;
 	}
 	

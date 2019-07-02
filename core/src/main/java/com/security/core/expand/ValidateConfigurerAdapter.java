@@ -5,6 +5,8 @@ import org.springframework.security.config.annotation.SecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.DefaultSecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+
 import com.security.core.autoconfig.LoginProperties;
 import com.security.core.validatecode.VaildateCodeFailureHandler;
 import com.security.core.validatecode.ValidateCodeFilter;
@@ -22,12 +24,15 @@ public class ValidateConfigurerAdapter extends SecurityConfigurerAdapter<Default
 	
 	private String loginPage;
 	
+	private AntPathRequestMatcher requestMatcher;
+	
 	@Nullable
 	private ValidateCodeManager validateCodeManager;
 
 	@Override
 	public void configure(HttpSecurity builder) throws Exception {
-		builder.addFilterBefore(new ValidateCodeFilter(holder, failHandler), UsernamePasswordAuthenticationFilter.class);
+		
+		builder.addFilterBefore(new ValidateCodeFilter(holder, failHandler, requestMatcher), UsernamePasswordAuthenticationFilter.class);
 	}
 
 	public void setHolder(ValidateCodeGeneratorHolder holder) {
@@ -62,5 +67,11 @@ public class ValidateConfigurerAdapter extends SecurityConfigurerAdapter<Default
 		}
 		
 		this.validateCodeManager = validateCodeManager;
+	}
+
+	public void setLoginUrl(LoginProperties loginProperties) {
+		if (loginProperties != null) {
+			requestMatcher = new AntPathRequestMatcher(loginProperties.getProcessingUrl(), "POST");
+		}
 	}
 }
