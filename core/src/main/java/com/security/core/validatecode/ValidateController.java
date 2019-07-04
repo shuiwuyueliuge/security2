@@ -25,7 +25,7 @@ public class ValidateController {
 	
 	@RequestMapping("/code/{type}")
 	public String validateCode(Model model, HttpServletRequest request, HttpServletResponse response, @PathVariable("type") String type) {
-		ValidateCodeGenerator generator = holder.getGenerator(type);
+		ValidateCodeGenerator generator = holder.getGeneratorByType(type);
 		logger.debug("发送验证码类型[" + type + "]");
 		String key = request.getParameter("key");
 		if (generator != null && key != null && !key.trim().equals("")) {

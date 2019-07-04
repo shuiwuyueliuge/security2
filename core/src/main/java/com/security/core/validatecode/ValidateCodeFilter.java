@@ -40,8 +40,8 @@ public class ValidateCodeFilter extends OncePerRequestFilter {
 	private boolean verify(HttpServletRequest request) {
 		String uri = getRequestURI(request);
 		if (requestMatcher != null && requestMatcher.matches(request)) {
-			logger.debug("验证码登陆url [" + uri + "]");
-			ValidateCodeGenerator generator = holder.getGenerator(uri.replace("/login/", ""));
+			logger.debug("验证码登陆url [" + 	uri + "]");
+			ValidateCodeGenerator generator = holder.getGeneratorByUri(uri);
 		    if (generator == null) {
 		    	logger.debug("验证码登陆url [" + uri + "]错误");
 		    	return false;

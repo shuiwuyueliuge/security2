@@ -53,7 +53,7 @@ public class ValidateCodeConfig {
 	
 	@Bean
 	public SmsConfigurerAdapter smsConfigurerAdapter(UserDetailsService user, ValidateCodeGeneratorHolder holder) {
-		ValidateCodeGenerator generator = holder.getGenerator(ValidateCodeTypeEnum.SMS.getType());
+		ValidateCodeGenerator generator = holder.getGeneratorByType(ValidateCodeTypeEnum.SMS.getType());
 		if (generator != null) {
 			return new SmsConfigurerAdapter(success, failer, user, generator.getLoginUri());
 		}

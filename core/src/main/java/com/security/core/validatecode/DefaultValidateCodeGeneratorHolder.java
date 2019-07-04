@@ -10,14 +10,12 @@ public class DefaultValidateCodeGeneratorHolder implements ValidateCodeGenerator
 	
 	public DefaultValidateCodeGeneratorHolder(Set<ValidateCodeGenerator> set) {
 		set.forEach(generator -> {
-			System.out.println(generator.getValidateCodeType());
-			System.out.println(generator.getLoginUri());
 			generators.put(generator.getValidateCodeType(), generator);
 		});
 	}
 
 	@Override
-	public ValidateCodeGenerator getGenerator(String validateType) {
+	public ValidateCodeGenerator getGeneratorByType(String validateType) {
 		return generators.get(validateType);
 	}
 
@@ -29,5 +27,10 @@ public class DefaultValidateCodeGeneratorHolder implements ValidateCodeGenerator
 	@Override
 	public void addGenerator(ValidateCodeGenerator generator) {
 		generators.put(generator.getValidateCodeType(), generator);
+	}
+
+	@Override
+	public ValidateCodeGenerator getGeneratorByUri(String uri) {
+		return generators.entrySet().stream().filter((e) -> e.getValue().getLoginUri().equals(uri)).findFirst().get().getValue();
 	}	
 }

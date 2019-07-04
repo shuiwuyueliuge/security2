@@ -2,7 +2,9 @@ package com.security.core.validatecode;
 
 public interface ValidateCodeGeneratorHolder {
 
-	ValidateCodeGenerator getGenerator(String validateType);
+	ValidateCodeGenerator getGeneratorByType(String validateType);
+	
+	ValidateCodeGenerator getGeneratorByUri(String uri);
 	
 	int size();
 	
