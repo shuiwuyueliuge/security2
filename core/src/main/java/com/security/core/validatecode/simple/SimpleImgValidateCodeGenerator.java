@@ -5,22 +5,22 @@ import javax.servlet.http.HttpServletResponse;
 import com.security.core.exception.SendCodeException;
 import com.security.core.utils.ImgCodeUtil;
 import com.security.core.utils.RandomUtil;
-import com.security.core.validatecode.CachedValidateCodeGenerator;
+import com.security.core.validatecode.InMemoryValidateCodeGenerator;
 import com.security.core.validatecode.ValidateCodeManager;
 
-public class SimpleImgValidateCodeGenerator extends CachedValidateCodeGenerator {
+public class SimpleImgValidateCodeGenerator extends InMemoryValidateCodeGenerator {
 
-	public SimpleImgValidateCodeGenerator(ValidateCodeManager manager) {
-		super(manager);
+	public SimpleImgValidateCodeGenerator(ValidateCodeManager manager, String uri, String ValidateCodeType) {
+		super(manager, uri, ValidateCodeType);
 	}
 
 	@Override
-	protected Object send(String key, String code, HttpServletResponse response) throws SendCodeException {
+	protected String send(String key, String code, HttpServletResponse response) throws SendCodeException {
 		try {
 			response.setContentType("image/jpeg");
-			response.setHeader("Pragma","no-cache");
-			response.setHeader("Cache-Control","no-cache");
-			response.setIntHeader("Expires",-1);
+			response.setHeader("Pragma", "no-cache");
+			response.setHeader("Cache-Control", "no-cache");
+			response.setIntHeader("Expires", -1);
 			ImgCodeUtil.write(code, response.getOutputStream());
 		} catch (Exception e) {
 			throw new SendCodeException(e);

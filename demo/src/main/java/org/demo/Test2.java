@@ -14,10 +14,10 @@ public class Test2 extends AbstractView {
 	@Override
 	protected void renderMergedOutputModel(Map<String, Object> model, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
-		System.out.println(model.get("sendResult"));
-		System.out.println(model.get("success"));
 		if (!(boolean)model.get("success")) {
-			response.getWriter().write("error");
+			response.getOutputStream().write("error".getBytes());
 		}
+		
+		response.getOutputStream().write("send success".getBytes());
 	}
 }

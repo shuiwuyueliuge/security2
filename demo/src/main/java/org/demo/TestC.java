@@ -15,9 +15,9 @@ public class TestC {
 	
 	@RequestMapping("/test")
 	public Object test(HttpServletRequest r) {
-		System.out.println(new AntPathRequestMatcher("/test").matches(r));
-		System.out.println(new AntPathRequestMatcher("/test/**").matches(r));
-		System.out.println(new AntPathRequestMatcher("/login/**").matches(r));
+		//System.out.println(new AntPathRequestMatcher("/test").matches(r));
+		//System.out.println(new AntPathRequestMatcher("/test/**").matches(r));
+		//System.out.println(new AntPathRequestMatcher("/login/**").matches(r));
 		return new Date().toLocaleString();
 	}
 }

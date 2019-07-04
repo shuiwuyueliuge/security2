@@ -6,5 +6,5 @@ public interface ValidateCodeGeneratorHolder {
 	
 	int size();
 	
-	void addGenerator(String path, ValidateCodeGenerator generator);
+	void addGenerator(ValidateCodeGenerator generator);
 }

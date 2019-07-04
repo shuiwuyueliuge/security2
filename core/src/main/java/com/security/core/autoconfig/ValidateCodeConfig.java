@@ -1,13 +1,12 @@
 package com.security.core.autoconfig;
 
-import java.util.Map;
+import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-
 import com.security.core.expand.SmsConfigurerAdapter;
 import com.security.core.expand.ValidateConfigurerAdapter;
 import com.security.core.validatecode.DefaultValidateCodeGeneratorHolder;
@@ -15,6 +14,7 @@ import com.security.core.validatecode.VaildateCodeFailureHandler;
 import com.security.core.validatecode.ValidateCodeGenerator;
 import com.security.core.validatecode.ValidateCodeGeneratorHolder;
 import com.security.core.validatecode.ValidateCodeManager;
+import com.security.core.validatecode.ValidateCodeTypeEnum;
 import com.security.core.validatecode.ValidateController;
 
 @Import({ ValidateController.class })
@@ -36,7 +36,7 @@ public class ValidateCodeConfig {
 	private AuthenticationFailureHandler failer;
 
 	@Bean
-	public ValidateCodeGeneratorHolder generatorHolder(Map<String, ValidateCodeGenerator> generators) {
+	public ValidateCodeGeneratorHolder generatorHolder(Set<ValidateCodeGenerator> generators) {
 		return new DefaultValidateCodeGeneratorHolder(generators);
 	}
 	
@@ -52,7 +52,12 @@ public class ValidateCodeConfig {
 	}
 	
 	@Bean
-	public SmsConfigurerAdapter smsConfigurerAdapter(UserDetailsService user) {
-		return new SmsConfigurerAdapter(success, failer, user);
+	public SmsConfigurerAdapter smsConfigurerAdapter(UserDetailsService user, ValidateCodeGeneratorHolder holder) {
+		ValidateCodeGenerator generator = holder.getGenerator(ValidateCodeTypeEnum.SMS.getType());
+		if (generator != null) {
+			return new SmsConfigurerAdapter(success, failer, user, generator.getLoginUri());
+		}
+		
+		return new SmsConfigurerAdapter(success, failer, user, null);
 	}
 }

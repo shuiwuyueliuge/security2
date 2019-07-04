@@ -6,12 +6,12 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.DefaultSecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-
 import com.security.core.autoconfig.LoginProperties;
 import com.security.core.validatecode.VaildateCodeFailureHandler;
 import com.security.core.validatecode.ValidateCodeFilter;
 import com.security.core.validatecode.ValidateCodeGeneratorHolder;
 import com.security.core.validatecode.ValidateCodeManager;
+import static com.security.core.validatecode.ValidateCodeTypeEnum.*;
 import com.security.core.validatecode.simple.SimpleImgValidateCodeGenerator;
 import com.security.core.validatecode.simple.SimpleValidateCodeManager;
 
@@ -31,13 +31,12 @@ public class ValidateConfigurerAdapter extends SecurityConfigurerAdapter<Default
 
 	@Override
 	public void configure(HttpSecurity builder) throws Exception {
-		
 		builder.addFilterBefore(new ValidateCodeFilter(holder, failHandler, requestMatcher), UsernamePasswordAuthenticationFilter.class);
 	}
 
 	public void setHolder(ValidateCodeGeneratorHolder holder) {
 		if (holder.size() == 0) {
-			holder.addGenerator("img", new SimpleImgValidateCodeGenerator(validateCodeManager));
+			holder.addGenerator(new SimpleImgValidateCodeGenerator(validateCodeManager, "", IMG.getType()));
 		}
 		
 		this.holder = holder;

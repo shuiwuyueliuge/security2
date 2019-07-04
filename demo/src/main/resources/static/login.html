@@ -33,7 +33,24 @@
 			</p>
 			<input type="text" name="code" id="code" />
 			<input type="hidden" name="key" value="123" />
-			<img src="/code/img?key=123">
+			<img src="/code/img3?key=123">
+			<br>
+			<input type="checkbox" name="remember-me" value="true" id="remember-me"/>记住我 
+			<button class="btn btn-lg btn-primary btn-block" type="submit">Sign
+				in</button>
+		</form>
+		
+		<form class="form-signin" method="post" action="/login/sms">
+			<h2 class="form-signin-heading">Please sign in</h2>
+			<p>
+				<label for="key" class="sr-only">key</label> <input
+					type="text" id="key" name="key" class="form-control"
+					placeholder="key" required autofocus>
+			</p>
+			<p>
+			</p>
+			<input type="text" name="code" id="code" />
+			<a href="/code/sms?key=user" target="_black">获取验证码</a>
 			<br>
 			<input type="checkbox" name="remember-me" value="true" id="remember-me"/>记住我 
 			<button class="btn btn-lg btn-primary btn-block" type="submit">Sign

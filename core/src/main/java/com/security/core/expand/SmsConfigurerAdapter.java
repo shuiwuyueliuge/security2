@@ -12,6 +12,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import com.security.core.authentication.sms.SmsAuthenticationFilter;
 import com.security.core.authentication.sms.SmsAuthenticationProvider;
+import com.security.core.validatecode.ValidateCodeFilter;
 
 public class SmsConfigurerAdapter extends SecurityConfigurerAdapter<DefaultSecurityFilterChain,HttpSecurity> {
 
@@ -22,17 +23,24 @@ public class SmsConfigurerAdapter extends SecurityConfigurerAdapter<DefaultSecur
 	private AuthenticationFailureHandler failer;
     
     private UserDetailsService user;
+    
+    private String smsLoginUri;
 
     public SmsConfigurerAdapter(AuthenticationSuccessHandler success, AuthenticationFailureHandler failer,
-			UserDetailsService user) {
+			UserDetailsService user, String smsLoginUri) {
 		this.success = success;
 		this.failer = failer;
 		this.user = user;
+		this.smsLoginUri = smsLoginUri;
 	}
 
 	@Override
     public void configure(HttpSecurity builder) throws Exception {
-        SmsAuthenticationFilter smsCodeAuthenticationFilter = new SmsAuthenticationFilter();
+		if (smsLoginUri == null) {
+			return;
+		}
+		
+        SmsAuthenticationFilter smsCodeAuthenticationFilter = new SmsAuthenticationFilter(smsLoginUri);
         smsCodeAuthenticationFilter.setAuthenticationManager(builder.getSharedObject(AuthenticationManager.class));
         if (success != null) {
         	smsCodeAuthenticationFilter.setAuthenticationSuccessHandler(success);
@@ -45,6 +53,7 @@ public class SmsConfigurerAdapter extends SecurityConfigurerAdapter<DefaultSecur
         SmsAuthenticationProvider smsCodeAuthenticationProvider = new SmsAuthenticationProvider();
         smsCodeAuthenticationProvider.setUserDetailsService(user);
         builder.authenticationProvider(smsCodeAuthenticationProvider)
-               .addFilterAfter(smsCodeAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+               .addFilterAfter(smsCodeAuthenticationFilter, ValidateCodeFilter.class)
+               .addFilterBefore(smsCodeAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
     }
 }
