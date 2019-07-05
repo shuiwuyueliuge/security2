@@ -14,10 +14,11 @@ import org.springframework.security.web.authentication.logout.LogoutSuccessHandl
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.security.web.session.InvalidSessionStrategy;
 import org.springframework.security.web.session.SessionInformationExpiredStrategy;
-import com.security.core.autoconfig.LoginProperties;
-import com.security.core.autoconfig.LogoutProperties;
-import com.security.core.autoconfig.RememberMeProperties;
-import com.security.core.autoconfig.SessionProperties;
+
+import com.security.core.config.LoginProperties;
+import com.security.core.config.LogoutProperties;
+import com.security.core.config.RememberMeProperties;
+import com.security.core.config.SessionProperties;
 import com.security.core.expand.SmsConfigurerAdapter;
 import com.security.core.expand.ValidateConfigurerAdapter;
 import com.security.core.request.RequestManager;

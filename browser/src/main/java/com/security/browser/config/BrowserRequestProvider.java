@@ -3,8 +3,9 @@ package com.security.browser.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.ExpressionUrlAuthorizationConfigurer;
-import com.security.core.autoconfig.LoginProperties;
-import com.security.core.autoconfig.LogoutProperties;
+
+import com.security.core.config.LoginProperties;
+import com.security.core.config.LogoutProperties;
 import com.security.core.request.RequestProvider;
 
 public class BrowserRequestProvider implements RequestProvider {

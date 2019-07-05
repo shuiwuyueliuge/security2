@@ -1,4 +1,4 @@
-package com.security.core.autoconfig;
+package com.security.core.config;
 
 import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +27,9 @@ public class ValidateCodeConfig {
 	private LoginProperties loginProperties;
 	
 	@Autowired(required = false)
+	private ValidateCodeProperties validateCodeProperties;
+	
+	@Autowired(required = false)
 	private ValidateCodeManager validateCodeManager;
 	
 	@Autowired(required = false)
@@ -43,11 +46,11 @@ public class ValidateCodeConfig {
 	@Bean
 	public ValidateConfigurerAdapter validateConfigurerAdapter(ValidateCodeGeneratorHolder holder) {
 		ValidateConfigurerAdapter adapter = new ValidateConfigurerAdapter();
+		adapter.setHolder(holder);
 		adapter.setValidateCodeManager(validateCodeManager);
 		adapter.setLoginPage(loginProperties);
 		adapter.setFailHandler(failHandler);
-		adapter.setHolder(holder);
-		adapter.setLoginUrl(loginProperties);
+		adapter.setValidateCodeProperties(validateCodeProperties);
 		return adapter;
 	}
 	

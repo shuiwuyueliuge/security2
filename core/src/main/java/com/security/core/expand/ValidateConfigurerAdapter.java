@@ -6,12 +6,14 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.DefaultSecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import com.security.core.autoconfig.LoginProperties;
+import com.security.core.config.LoginProperties;
+import com.security.core.config.ValidateCodeProperties;
 import com.security.core.validatecode.VaildateCodeFailureHandler;
 import com.security.core.validatecode.ValidateCodeFilter;
 import com.security.core.validatecode.ValidateCodeGeneratorHolder;
 import com.security.core.validatecode.ValidateCodeManager;
 import static com.security.core.validatecode.ValidateCodeTypeEnum.*;
+import java.util.List;
 import com.security.core.validatecode.simple.SimpleImgValidateCodeGenerator;
 import com.security.core.validatecode.simple.SimpleValidateCodeManager;
 
@@ -24,14 +26,20 @@ public class ValidateConfigurerAdapter extends SecurityConfigurerAdapter<Default
 	
 	private String loginPage;
 	
-	private AntPathRequestMatcher requestMatcher;
+	private List<AntPathRequestMatcher> requestMatcher;
 	
 	@Nullable
 	private ValidateCodeManager validateCodeManager;
+	
+	private ValidateCodeProperties validateCodeProperties;
+
+	public void setValidateCodeProperties(ValidateCodeProperties validateCodeProperties) {
+		this.validateCodeProperties = validateCodeProperties;
+	}
 
 	@Override
 	public void configure(HttpSecurity builder) throws Exception {
-		builder.addFilterBefore(new ValidateCodeFilter(holder, failHandler, requestMatcher), UsernamePasswordAuthenticationFilter.class);
+		builder.addFilterBefore(new ValidateCodeFilter(holder, failHandler, requestMatcher, validateCodeProperties), UsernamePasswordAuthenticationFilter.class);
 	}
 
 	public void setHolder(ValidateCodeGeneratorHolder holder) {
@@ -39,6 +47,7 @@ public class ValidateConfigurerAdapter extends SecurityConfigurerAdapter<Default
 			holder.addGenerator(new SimpleImgValidateCodeGenerator(validateCodeManager, "", IMG.getType()));
 		}
 		
+		this.requestMatcher = holder.toAntPathRequestMatcher();
 		this.holder = holder;
 	}
 
@@ -66,11 +75,5 @@ public class ValidateConfigurerAdapter extends SecurityConfigurerAdapter<Default
 		}
 		
 		this.validateCodeManager = validateCodeManager;
-	}
-
-	public void setLoginUrl(LoginProperties loginProperties) {
-		if (loginProperties != null) {
-			requestMatcher = new AntPathRequestMatcher(loginProperties.getProcessingUrl(), "POST");
-		}
 	}
 }

@@ -1,4 +1,4 @@
-package com.security.core.autoconfig;
+package com.security.core.config;
 
 import java.util.Set;
 import javax.sql.DataSource;
@@ -24,6 +24,13 @@ public class AutoConfig {
 	@ConditionalOnProperty(prefix = "security.login", name = { "page", "processing-url", "username-parameter", "password-parameter" })
 	public LoginProperties loginProperties() {
 		return new LoginProperties();
+	}
+	
+	@Bean
+	@ConfigurationProperties(prefix = "security.code")
+	@ConditionalOnProperty(prefix = "security.code", name = { "key-parameter", "value-parameter" })
+	public ValidateCodeProperties validateCodeProperties() {
+		return new ValidateCodeProperties();
 	}
 	
 	@Bean

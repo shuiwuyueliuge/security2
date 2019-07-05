@@ -1,4 +1,4 @@
-package com.security.core.autoconfig;
+package com.security.core.config;
 
 import lombok.Builder;
 import lombok.Data;

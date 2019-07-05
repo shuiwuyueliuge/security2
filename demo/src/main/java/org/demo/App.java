@@ -2,8 +2,6 @@ package org.demo;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import com.security.core.enable.EnableValidateCode;
 import com.security.core.validatecode.ValidateCodeGenerator;
@@ -22,13 +20,8 @@ public class App {
 	}
 	
 	@Bean
-	public ValidateCodeManager codeManager() {
-		return new SimpleValidateCodeManager();
-	}
-	
-	@Bean
-	public ValidateCodeGenerator img2(ValidateCodeManager manager) {
-		return new SimpleImgValidateCodeGenerator(manager, "/login/img", "img3");
+	public ValidateCodeGenerator img2() {
+		return new SimpleImgValidateCodeGenerator(new SimpleValidateCodeManager(), "/login", "img3");
 	}
 	
 	@Bean

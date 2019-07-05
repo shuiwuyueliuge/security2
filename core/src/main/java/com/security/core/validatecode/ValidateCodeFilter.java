@@ -1,6 +1,7 @@
 package com.security.core.validatecode;
 
 import java.io.IOException;
+import java.util.List;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -9,6 +10,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
+
+import com.security.core.config.ValidateCodeProperties;
 import com.security.core.exception.ValidateCodeException;
 
 public class ValidateCodeFilter extends OncePerRequestFilter {
@@ -17,14 +20,26 @@ public class ValidateCodeFilter extends OncePerRequestFilter {
 	
 	private VaildateCodeFailureHandler failureHandler;
 	
-	private AntPathRequestMatcher requestMatcher;
+	private List<AntPathRequestMatcher> requestMatcher;
+	
+	private String keyParameter;
+	
+	private String valueParameter;
 	
 	private final Log logger = LogFactory.getLog(getClass());
 	
-	public ValidateCodeFilter(ValidateCodeGeneratorHolder holder, VaildateCodeFailureHandler failureHandler, AntPathRequestMatcher requestMatcher) {
+	public ValidateCodeFilter(ValidateCodeGeneratorHolder holder, VaildateCodeFailureHandler failureHandler, List<AntPathRequestMatcher> requestMatcher, ValidateCodeProperties validateCodeProperties) {
 		this.holder = holder;
 		this.failureHandler = failureHandler;
 		this.requestMatcher = requestMatcher;
+		if (validateCodeProperties != null) {
+			this.keyParameter = validateCodeProperties.getKeyParameter();
+			this.valueParameter = validateCodeProperties.getValueParameter();
+			return;
+		}
+		
+		this.keyParameter = "key";
+		this.valueParameter = "code";
 	}
 
 	@Override
@@ -39,7 +54,7 @@ public class ValidateCodeFilter extends OncePerRequestFilter {
 	
 	private boolean verify(HttpServletRequest request) {
 		String uri = getRequestURI(request);
-		if (requestMatcher != null && requestMatcher.matches(request)) {
+		if (matches(request)) {
 			logger.debug("验证码登陆url [" + 	uri + "]");
 			ValidateCodeGenerator generator = holder.getGeneratorByUri(uri);
 		    if (generator == null) {
@@ -47,7 +62,7 @@ public class ValidateCodeFilter extends OncePerRequestFilter {
 		    	return false;
 		    }
 		    
-		    if (!generator.check(getParameter(request, "key"), getParameter(request, "code"))) {
+		    if (!generator.check(getParameter(request, keyParameter), getParameter(request, valueParameter))) {
 		    	logger.debug("验证码登陆url [" + uri + "]验证码验证失败");
 		    	return false;
 		    }
@@ -62,5 +77,15 @@ public class ValidateCodeFilter extends OncePerRequestFilter {
 	
 	private String getParameter(HttpServletRequest request, String key) {
 		return request.getParameter(key);
+	}
+	
+	private boolean matches(HttpServletRequest request) {
+		for (AntPathRequestMatcher antPathRequestMatcher : requestMatcher) {
+			if (antPathRequestMatcher.matches(request)) {
+				return true;
+			}
+		}
+		
+		return false;
 	}
 }

@@ -1,8 +1,12 @@
 package com.security.core.validatecode;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
+
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 public class DefaultValidateCodeGeneratorHolder implements ValidateCodeGeneratorHolder {
 	
@@ -32,5 +36,12 @@ public class DefaultValidateCodeGeneratorHolder implements ValidateCodeGenerator
 	@Override
 	public ValidateCodeGenerator getGeneratorByUri(String uri) {
 		return generators.entrySet().stream().filter((e) -> e.getValue().getLoginUri().equals(uri)).findFirst().get().getValue();
+	}
+
+	@Override
+	public List<AntPathRequestMatcher> toAntPathRequestMatcher() {
+		return generators.values().stream().map(gen -> {
+			return new AntPathRequestMatcher(gen.getLoginUri(), "POST");
+		}).collect(Collectors.toList());
 	}	
 }

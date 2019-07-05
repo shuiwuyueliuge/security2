@@ -5,7 +5,8 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 import org.springframework.context.annotation.Import;
-import com.security.core.autoconfig.ValidateCodeConfig;
+
+import com.security.core.config.ValidateCodeConfig;
 
 @Retention(RUNTIME)
 @Target(TYPE)
