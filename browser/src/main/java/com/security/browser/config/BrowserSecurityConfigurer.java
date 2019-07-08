@@ -14,6 +14,7 @@ import org.springframework.security.web.authentication.logout.LogoutSuccessHandl
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.security.web.session.InvalidSessionStrategy;
 import org.springframework.security.web.session.SessionInformationExpiredStrategy;
+import org.springframework.social.security.SpringSocialConfigurer;
 
 import com.security.core.config.LoginProperties;
 import com.security.core.config.LogoutProperties;
@@ -65,6 +66,9 @@ public class BrowserSecurityConfigurer extends WebSecurityConfigurerAdapter {
 	@Autowired(required = false)
 	private SmsConfigurerAdapter smsConfigurerAdapter;
 	
+	@Autowired(required = false)
+	private SpringSocialConfigurer socialConfigurer;
+	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		requestManager.config(http.authorizeRequests());
@@ -80,6 +84,8 @@ public class BrowserSecurityConfigurer extends WebSecurityConfigurerAdapter {
 		if (smsConfigurerAdapter != null) {
 			http.apply(smsConfigurerAdapter);
 		}
+		
+		http.apply(socialConfigurer);
 	}
 	
 	private void rememberMeConfigure(HttpSecurity http) throws Exception {
