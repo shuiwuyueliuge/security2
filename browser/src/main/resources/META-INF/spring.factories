@@ -1,7 +1,7 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.security.core.config.AutoConfig,\
-com.security.browser.config.BrowserSecurityConfigurer,\
-com.security.browser.config.BrowserRequestProvider,\
 com.security.core.social.github.GitHubSocialConfigurerAdapter,\
 com.security.core.social.qq.QQSocialConfigurerAdapter,\
-com.security.core.config.SocialConfig
+com.security.core.config.SocialConfig,\
+com.security.core.config.AutoConfig,\
+com.security.browser.config.BrowserRequestProvider,\
+com.security.browser.config.BrowserSecurityConfigurer

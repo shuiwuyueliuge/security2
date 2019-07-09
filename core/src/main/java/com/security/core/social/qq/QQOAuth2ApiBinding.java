@@ -33,7 +33,6 @@ public class QQOAuth2ApiBinding extends AbstractOAuth2ApiBinding implements QQ {
 	
 	@Data
 	protected static class OpenId {
-		
 		private String client_id;
 		private String openid;
 	}
