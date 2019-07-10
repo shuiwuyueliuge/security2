@@ -3,8 +3,9 @@ package org.demo;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.social.config.annotation.EnableSocial;
+import com.security.core.enable.EnableSocial;
 import com.security.core.enable.EnableValidateCode;
+import com.security.core.social.SocialEnum;
 import com.security.core.validatecode.ValidateCodeGenerator;
 import com.security.core.validatecode.VaildateCodeFailureHandler;
 import com.security.core.validatecode.simple.SimpleImgValidateCodeGenerator;
@@ -13,25 +14,25 @@ import com.security.core.validatecode.ValidateCodeTypeEnum;
 
 @SpringBootApplication
 @EnableValidateCode
-@EnableSocial
+@EnableSocial({ SocialEnum.QQ, SocialEnum.GITHUB })
 public class App {
-	
+
 	public static void main(String[] args) {
 		SpringApplication.run(App.class, args);
 	}
-	
+
 	@Bean
 	public ValidateCodeGenerator img2() {
 		return new SimpleImgValidateCodeGenerator(new SimpleValidateCodeManager(), "/login", "img3");
 	}
-	
+
 	@Bean
 	public VaildateCodeFailureHandler codeFailureHandler() {
 		return (request, response, exception) -> {
 			response.getWriter().write("Vaildate Code Failure");
 		};
 	}
-	
+
 	@Bean
 	public ValidateCodeGenerator s() {
 		return new A(new SimpleValidateCodeManager(), "/login/sms", ValidateCodeTypeEnum.SMS.getType());

@@ -88,6 +88,8 @@ public class SocialConfigAdapter extends SpringSocialConfigurer {
 
 	private <T> T getDependency(ApplicationContext applicationContext, Class<T> dependencyType) {
 		try {
+
+			
 			T dependency = applicationContext.getBean(dependencyType);
 			return dependency;
 		} catch (NoSuchBeanDefinitionException e) {

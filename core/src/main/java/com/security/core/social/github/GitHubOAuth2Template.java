@@ -8,6 +8,8 @@ public class GitHubOAuth2Template extends OAuth2Template {
 	private String authorizeUrl;
 	
 	private String clientId;
+	
+	private static final String BASE_AUTHENTICATE_URL = "%s?client_id=%s&scope=user:email";
 
 	public GitHubOAuth2Template(String clientId, String clientSecret, String authorizeUrl, String accessTokenUrl) {
 		super(clientId, clientSecret, authorizeUrl, accessTokenUrl);
@@ -17,6 +19,6 @@ public class GitHubOAuth2Template extends OAuth2Template {
 	
 	@Override
 	public String buildAuthenticateUrl(OAuth2Parameters parameters) {
-		return authorizeUrl + "?client_id=" + clientId +  "&scope=user:email";
+		return String.format(BASE_AUTHENTICATE_URL, authorizeUrl, clientId);
 	}
 }
