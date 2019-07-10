@@ -1,5 +1,8 @@
 package com.security.core.config;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.stream.Stream;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
@@ -12,21 +15,29 @@ import com.security.core.social.github.GitHubSocialConfigurerAdapter;
 import com.security.core.social.qq.QQSocialConfigurerAdapter;
 
 public class SocialConfigurerAdapterRegistrar implements ImportBeanDefinitionRegistrar {
+	
+	private Map<SocialEnum, Class<?>> map;
+	
+	{
+		map = new HashMap<SocialEnum, Class<?>>();
+		map.put(SocialEnum.QQ, QQSocialConfigurerAdapter.class);
+		map.put(SocialEnum.GITHUB, GitHubSocialConfigurerAdapter.class);
+	}
 
 	@Override
 	public void registerBeanDefinitions(AnnotationMetadata importingClassMetadata, BeanDefinitionRegistry registry) {
 		AnnotationAttributes annoAttrs = AnnotationAttributes.fromMap(importingClassMetadata.getAnnotationAttributes(EnableSocial.class.getName()));
 		SocialEnum[] values = (SocialEnum[]) annoAttrs.get("value");
-		for (SocialEnum socialEnum : values) {
-			if (socialEnum == SocialEnum.QQ) {
-				BeanDefinition beanDe = BeanDefinitionBuilder.rootBeanDefinition(QQSocialConfigurerAdapter.class).getBeanDefinition();
-				registry.registerBeanDefinition("QQSocialConfigurerAdapter", beanDe);
-			}
-			
-			if (socialEnum == SocialEnum.GITHUB) {
-				BeanDefinition beanDe = BeanDefinitionBuilder.rootBeanDefinition(GitHubSocialConfigurerAdapter.class).getBeanDefinition();
-				registry.registerBeanDefinition("GitHubSocialConfigurerAdapter", beanDe);
-			}
+		Stream.of(values).forEach(data -> registerBeanDefinition(data, registry));
+	}
+	
+	private void registerBeanDefinition(SocialEnum socialEnum, BeanDefinitionRegistry registry) {
+		Class<?> adapter = map.get(socialEnum);
+		if (adapter == null) {
+			return;
 		}
+		
+		BeanDefinition beanDe = BeanDefinitionBuilder.rootBeanDefinition(adapter).getBeanDefinition();
+		registry.registerBeanDefinition(adapter.getName(), beanDe);
 	}
 }
