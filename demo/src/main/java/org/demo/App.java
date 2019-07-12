@@ -14,7 +14,7 @@ import com.security.core.validatecode.ValidateCodeTypeEnum;
 
 @SpringBootApplication
 @EnableValidateCode
-@EnableSocial({ SocialEnum.QQ, SocialEnum.GITHUB })
+//@EnableSocial({ SocialEnum.QQ, SocialEnum.GITHUB })
 public class App {
 
 	public static void main(String[] args) {

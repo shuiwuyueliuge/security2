@@ -85,7 +85,9 @@ public class BrowserSecurityConfigurer extends WebSecurityConfigurerAdapter {
 			http.apply(smsConfigurerAdapter);
 		}
 		
-		http.apply(socialConfigurer);
+		if (socialConfigurer != null) {
+			http.apply(socialConfigurer);
+		}
 	}
 	
 	private void rememberMeConfigure(HttpSecurity http) throws Exception {

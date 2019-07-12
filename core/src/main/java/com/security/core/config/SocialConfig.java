@@ -1,7 +1,6 @@
 package com.security.core.config;
 
-import java.util.concurrent.Executors;
-
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.social.connect.ConnectionFactoryLocator;
@@ -16,13 +15,17 @@ import com.security.core.social.controller.SocialBindingController;
 import com.security.core.social.controller.SocialConnectController;
 
 public class SocialConfig {
-
+	
+	@Value("${security.social.signup-url}")
+	private String signupUrl;
+	
 	@Bean
 	public SpringSocialConfigurer socialSecurityConfig() {
 		SocialConfigAdapter springSocialConfigurer = new SocialConfigAdapter((request, response, authentication) -> {
 			
 		});
-		springSocialConfigurer.signupUrl("/social/user");
+		
+		springSocialConfigurer.signupUrl(signupUrl);
 		return springSocialConfigurer;
 	}
 
