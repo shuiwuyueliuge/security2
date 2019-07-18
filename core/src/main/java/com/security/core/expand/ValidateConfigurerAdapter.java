@@ -5,7 +5,7 @@ import org.springframework.security.config.annotation.SecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.DefaultSecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.util.matcher.RequestMatcher;
 import com.security.core.config.LoginProperties;
 import com.security.core.config.ValidateCodeProperties;
 import com.security.core.validatecode.VaildateCodeFailureHandler;
@@ -13,7 +13,7 @@ import com.security.core.validatecode.ValidateCodeFilter;
 import com.security.core.validatecode.ValidateCodeGeneratorHolder;
 import com.security.core.validatecode.ValidateCodeManager;
 import static com.security.core.validatecode.ValidateCodeTypeEnum.*;
-import java.util.List;
+import java.util.Set;
 import com.security.core.validatecode.simple.SimpleImgValidateCodeGenerator;
 import com.security.core.validatecode.simple.SimpleValidateCodeManager;
 
@@ -26,7 +26,7 @@ public class ValidateConfigurerAdapter extends SecurityConfigurerAdapter<Default
 	
 	private String loginPage;
 	
-	private List<AntPathRequestMatcher> requestMatcher;
+	private Set<RequestMatcher> requestMatcher;
 	
 	@Nullable
 	private ValidateCodeManager validateCodeManager;

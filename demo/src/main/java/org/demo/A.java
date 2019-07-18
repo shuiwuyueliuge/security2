@@ -2,15 +2,13 @@ package org.demo;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import com.security.core.exception.SendCodeException;
 import com.security.core.validatecode.InMemoryValidateCodeGenerator;
-import com.security.core.validatecode.ValidateCodeManager;
 
 public class A extends InMemoryValidateCodeGenerator {
 
-	public A(ValidateCodeManager manager, String loginUri, String ValidateCodeType) {
-		super(manager, loginUri, ValidateCodeType);
+	public A(String loginUri, String username, String type) {
+		super(loginUri, username, type);
 	}
 
 	@Override

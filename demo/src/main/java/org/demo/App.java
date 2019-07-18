@@ -3,9 +3,7 @@ package org.demo;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import com.security.core.enable.EnableSocial;
 import com.security.core.enable.EnableValidateCode;
-import com.security.core.social.SocialEnum;
 import com.security.core.validatecode.ValidateCodeGenerator;
 import com.security.core.validatecode.VaildateCodeFailureHandler;
 import com.security.core.validatecode.simple.SimpleImgValidateCodeGenerator;
@@ -35,6 +33,6 @@ public class App {
 
 	@Bean
 	public ValidateCodeGenerator s() {
-		return new A(new SimpleValidateCodeManager(), "/login/sms", ValidateCodeTypeEnum.SMS.getType());
+		return new A("/login/sms", "key", ValidateCodeTypeEnum.SMS.getType());
 	}
 }

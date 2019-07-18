@@ -1,5 +1,7 @@
 package com.security.core.expand;
 
+import java.util.Set;
+
 import org.springframework.lang.Nullable;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.SecurityConfigurerAdapter;
@@ -9,9 +11,11 @@ import org.springframework.security.web.DefaultSecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.util.matcher.RequestMatcher;
 
 import com.security.core.authentication.sms.SmsAuthenticationFilter;
 import com.security.core.authentication.sms.SmsAuthenticationProvider;
+import com.security.core.authentication.sms.UsernameAuthenticationFilter;
 import com.security.core.validatecode.ValidateCodeFilter;
 
 public class SmsConfigurerAdapter extends SecurityConfigurerAdapter<DefaultSecurityFilterChain,HttpSecurity> {
@@ -24,23 +28,20 @@ public class SmsConfigurerAdapter extends SecurityConfigurerAdapter<DefaultSecur
     
     private UserDetailsService user;
     
-    private String smsLoginUri;
+    private Set<RequestMatcher> metchers;
 
     public SmsConfigurerAdapter(AuthenticationSuccessHandler success, AuthenticationFailureHandler failer,
-			UserDetailsService user, String smsLoginUri) {
+			UserDetailsService user, Set<RequestMatcher> metchers) {
 		this.success = success;
 		this.failer = failer;
 		this.user = user;
-		this.smsLoginUri = smsLoginUri;
+		this.metchers = metchers;
 	}
 
 	@Override
     public void configure(HttpSecurity builder) throws Exception {
-		if (smsLoginUri == null) {
-			return;
-		}
-		
-        SmsAuthenticationFilter smsCodeAuthenticationFilter = new SmsAuthenticationFilter(smsLoginUri);
+        //SmsAuthenticationFilter smsCodeAuthenticationFilter = new SmsAuthenticationFilter(loginUris);
+		UsernameAuthenticationFilter smsCodeAuthenticationFilter = new UsernameAuthenticationFilter(metchers);
         smsCodeAuthenticationFilter.setAuthenticationManager(builder.getSharedObject(AuthenticationManager.class));
         if (success != null) {
         	smsCodeAuthenticationFilter.setAuthenticationSuccessHandler(success);

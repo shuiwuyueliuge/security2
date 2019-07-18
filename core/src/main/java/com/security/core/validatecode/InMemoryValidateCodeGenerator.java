@@ -3,19 +3,48 @@ package com.security.core.validatecode;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import com.security.core.exception.SendCodeException;
+import com.security.core.validatecode.simple.SimpleValidateCodeManager;
 
 public abstract class InMemoryValidateCodeGenerator implements ValidateCodeGenerator {
 
 	private ValidateCodeManager manager;
 
 	private String loginUri;
+	
+	private String username;
 
-	private String ValidateCodeType;
+	private String validateCodeType;
+	
+	private boolean usernameOnly;
 
-	public InMemoryValidateCodeGenerator(ValidateCodeManager manager, String loginUri, String ValidateCodeType) {
+	public InMemoryValidateCodeGenerator(ValidateCodeManager manager, String username, String loginUri, String validateCodeType) {
 		this.manager = manager;
 		this.loginUri = loginUri;
-		this.ValidateCodeType = ValidateCodeType;
+		this.username = username;
+		this.validateCodeType = validateCodeType;
+		usernameOnly = true;
+	}
+	
+	public InMemoryValidateCodeGenerator(ValidateCodeManager manager, String loginUri, String validateCodeType) {
+		this.manager = manager;
+		this.loginUri = loginUri;
+		this.validateCodeType = validateCodeType;
+		usernameOnly = false;
+	}
+	
+	public InMemoryValidateCodeGenerator(String loginUri, String validateCodeType) {
+		this.manager = new SimpleValidateCodeManager();
+		this.loginUri = loginUri;
+		usernameOnly = false;
+		this.validateCodeType = validateCodeType;
+	}
+	
+	public InMemoryValidateCodeGenerator(String loginUri, String username, String validateCodeType) {
+		this.manager = new SimpleValidateCodeManager();
+		this.loginUri = loginUri;
+		this.username = username;
+		this.validateCodeType = validateCodeType;
+		usernameOnly = true;
 	}
 
 	@Override
@@ -42,7 +71,16 @@ public abstract class InMemoryValidateCodeGenerator implements ValidateCodeGener
 		return loginUri;
 	}
 
-	public String getValidateCodeType() {
-		return ValidateCodeType;
+	public String getUsername() {
+		return username;
+	}
+	
+	public String getCodeType() {
+		return validateCodeType;
+	}
+	
+	@Override
+	public boolean isUsernameOnly() {
+		return usernameOnly;
 	}
 }

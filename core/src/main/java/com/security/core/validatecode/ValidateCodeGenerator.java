@@ -12,5 +12,9 @@ public interface ValidateCodeGenerator {
     
     String getLoginUri();
     
-    String getValidateCodeType();
+    String getUsername();
+    
+    String getCodeType();
+    
+    boolean isUsernameOnly();
 }

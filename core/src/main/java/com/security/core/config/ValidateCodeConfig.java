@@ -14,7 +14,6 @@ import com.security.core.validatecode.VaildateCodeFailureHandler;
 import com.security.core.validatecode.ValidateCodeGenerator;
 import com.security.core.validatecode.ValidateCodeGeneratorHolder;
 import com.security.core.validatecode.ValidateCodeManager;
-import com.security.core.validatecode.ValidateCodeTypeEnum;
 import com.security.core.validatecode.ValidateController;
 
 @Import({ ValidateController.class })
@@ -55,12 +54,11 @@ public class ValidateCodeConfig {
 	}
 	
 	@Bean
-	public SmsConfigurerAdapter smsConfigurerAdapter(UserDetailsService user, ValidateCodeGeneratorHolder holder) {
-		ValidateCodeGenerator generator = holder.getGeneratorByType(ValidateCodeTypeEnum.SMS.getType());
-		if (generator != null) {
-			return new SmsConfigurerAdapter(success, failer, user, generator.getLoginUri());
-		}
-		
-		return new SmsConfigurerAdapter(success, failer, user, null);
+	public SmsConfigurerAdapter smsConfigurerAdapter(UserDetailsService user, ValidateCodeGeneratorHolder holder) {	
+//		if (generator != null) {
+//			return new SmsConfigurerAdapter(success, failer, user, generator.getLoginUri());
+//		}
+//		
+		return new SmsConfigurerAdapter(success, failer, user, holder.toUsernameRequestMatcher());
 	}
 }

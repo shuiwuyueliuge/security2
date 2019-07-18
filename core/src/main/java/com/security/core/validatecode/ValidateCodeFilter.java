@@ -1,16 +1,15 @@
 package com.security.core.validatecode;
 
 import java.io.IOException;
-import java.util.List;
+import java.util.Set;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
-
 import com.security.core.config.ValidateCodeProperties;
 import com.security.core.exception.ValidateCodeException;
 
@@ -20,7 +19,7 @@ public class ValidateCodeFilter extends OncePerRequestFilter {
 	
 	private VaildateCodeFailureHandler failureHandler;
 	
-	private List<AntPathRequestMatcher> requestMatcher;
+	private Set<RequestMatcher> requestMatcher;
 	
 	private String keyParameter;
 	
@@ -28,7 +27,7 @@ public class ValidateCodeFilter extends OncePerRequestFilter {
 	
 	private final Log logger = LogFactory.getLog(getClass());
 	
-	public ValidateCodeFilter(ValidateCodeGeneratorHolder holder, VaildateCodeFailureHandler failureHandler, List<AntPathRequestMatcher> requestMatcher, ValidateCodeProperties validateCodeProperties) {
+	public ValidateCodeFilter(ValidateCodeGeneratorHolder holder, VaildateCodeFailureHandler failureHandler, Set<RequestMatcher> requestMatcher, ValidateCodeProperties validateCodeProperties) {
 		this.holder = holder;
 		this.failureHandler = failureHandler;
 		this.requestMatcher = requestMatcher;
@@ -80,7 +79,7 @@ public class ValidateCodeFilter extends OncePerRequestFilter {
 	}
 	
 	private boolean matches(HttpServletRequest request) {
-		for (AntPathRequestMatcher antPathRequestMatcher : requestMatcher) {
+		for (RequestMatcher antPathRequestMatcher : requestMatcher) {
 			if (antPathRequestMatcher.matches(request)) {
 				return true;
 			}

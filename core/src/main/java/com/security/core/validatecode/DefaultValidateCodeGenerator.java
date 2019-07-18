@@ -8,11 +8,23 @@ public abstract class DefaultValidateCodeGenerator implements ValidateCodeGenera
 	
 	private String loginUri;
 	
-	private String ValidateCodeType;
+	private String username;
 	
-	public DefaultValidateCodeGenerator(String loginUri, String ValidateCodeType) {
+	private String validateCodeType;
+	
+	private boolean usernameOnly;
+	
+	public DefaultValidateCodeGenerator(String loginUri, String username, String validateCodeType) {
 		this.loginUri = loginUri;
-		this.ValidateCodeType = ValidateCodeType;
+		this.username = username;
+		this.validateCodeType = validateCodeType;
+		this.usernameOnly = true;
+	}
+	
+	public DefaultValidateCodeGenerator(String loginUri, String validateCodeType) {
+		this.loginUri = loginUri;
+		this.validateCodeType = validateCodeType;
+		this.usernameOnly = false;
 	}
 
 	@Override
@@ -38,7 +50,16 @@ public abstract class DefaultValidateCodeGenerator implements ValidateCodeGenera
 		return loginUri;
 	}
 
-	public String getValidateCodeType() {
-		return ValidateCodeType;
+	public String getUsername() {
+		return username;
+	}
+	
+	public String getCodeType() {
+		return validateCodeType;
+	}
+	
+	@Override
+	public boolean isUsernameOnly() {
+		return usernameOnly;
 	}
 }

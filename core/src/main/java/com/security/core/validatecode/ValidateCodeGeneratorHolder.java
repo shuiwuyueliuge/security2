@@ -1,8 +1,7 @@
 package com.security.core.validatecode;
 
-import java.util.List;
-
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import java.util.Set;
+import org.springframework.security.web.util.matcher.RequestMatcher;
 
 public interface ValidateCodeGeneratorHolder {
 
@@ -14,5 +13,9 @@ public interface ValidateCodeGeneratorHolder {
 	
 	void addGenerator(ValidateCodeGenerator generator);
 	
-	List<AntPathRequestMatcher> toAntPathRequestMatcher();
+	Set<RequestMatcher> toAntPathRequestMatcher();
+	
+	Set<RequestMatcher> toUsernameRequestMatcher();
+	
+	Set<String> loginUris();
 }
