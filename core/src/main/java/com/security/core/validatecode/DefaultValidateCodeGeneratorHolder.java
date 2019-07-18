@@ -9,7 +9,7 @@ import java.util.stream.Stream;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 
-import com.security.core.authentication.sms.UsernameRequestMatcher;
+import com.security.core.authentication.usernameonly.UsernameRequestMatcher;
 
 public class DefaultValidateCodeGeneratorHolder implements ValidateCodeGeneratorHolder {
 

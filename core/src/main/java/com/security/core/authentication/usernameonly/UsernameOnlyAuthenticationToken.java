@@ -1,24 +1,24 @@
-package com.security.core.authentication.sms;
+package com.security.core.authentication.usernameonly;
 
 import java.util.Collection;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.SpringSecurityCoreVersion;
 
-public class SmsAuthenticationToken extends AbstractAuthenticationToken {
+public class UsernameOnlyAuthenticationToken extends AbstractAuthenticationToken {
 
 	private static final long serialVersionUID = SpringSecurityCoreVersion.SERIAL_VERSION_UID;
 
 	private final Object principal;
 	private Object credentials;
 
-	public SmsAuthenticationToken(Object principal) {
+	public UsernameOnlyAuthenticationToken(Object principal) {
 		super(null);
 		this.principal = principal;
 		setAuthenticated(false);
 	}
 
-	public SmsAuthenticationToken(Object principal, Collection<? extends GrantedAuthority> authorities) {
+	public UsernameOnlyAuthenticationToken(Object principal, Collection<? extends GrantedAuthority> authorities) {
 		super(authorities);
 		this.principal = principal;
 		super.setAuthenticated(true); // must use super, as we override

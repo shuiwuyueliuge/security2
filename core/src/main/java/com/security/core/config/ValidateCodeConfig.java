@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-import com.security.core.expand.SmsConfigurerAdapter;
+import com.security.core.expand.UsernameOnlyConfigurerAdapter;
 import com.security.core.expand.ValidateConfigurerAdapter;
 import com.security.core.validatecode.DefaultValidateCodeGeneratorHolder;
 import com.security.core.validatecode.VaildateCodeFailureHandler;
@@ -54,11 +54,11 @@ public class ValidateCodeConfig {
 	}
 	
 	@Bean
-	public SmsConfigurerAdapter smsConfigurerAdapter(UserDetailsService user, ValidateCodeGeneratorHolder holder) {	
+	public UsernameOnlyConfigurerAdapter smsConfigurerAdapter(UserDetailsService user, ValidateCodeGeneratorHolder holder) {	
 //		if (generator != null) {
 //			return new SmsConfigurerAdapter(success, failer, user, generator.getLoginUri());
 //		}
 //		
-		return new SmsConfigurerAdapter(success, failer, user, holder.toUsernameRequestMatcher());
+		return new UsernameOnlyConfigurerAdapter(success, failer, user, holder.toUsernameRequestMatcher());
 	}
 }

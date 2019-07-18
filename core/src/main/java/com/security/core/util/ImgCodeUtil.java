@@ -1,4 +1,4 @@
-package com.security.core.utils;
+package com.security.core.util;
 
 import java.awt.Color;
 import java.awt.Font;

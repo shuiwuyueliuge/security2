@@ -8,7 +8,6 @@ import com.security.core.validatecode.ValidateCodeGenerator;
 import com.security.core.validatecode.VaildateCodeFailureHandler;
 import com.security.core.validatecode.simple.SimpleImgValidateCodeGenerator;
 import com.security.core.validatecode.simple.SimpleValidateCodeManager;
-import com.security.core.validatecode.ValidateCodeTypeEnum;
 
 @SpringBootApplication
 @EnableValidateCode
@@ -33,6 +32,6 @@ public class App {
 
 	@Bean
 	public ValidateCodeGenerator s() {
-		return new A("/login/sms", "key", ValidateCodeTypeEnum.SMS.getType());
+		return new A("/login/sms", "key", "sms");
 	}
 }

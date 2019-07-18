@@ -1,7 +1,6 @@
 package com.security.core.expand;
 
 import java.util.Set;
-
 import org.springframework.lang.Nullable;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.SecurityConfigurerAdapter;
@@ -13,12 +12,11 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 
-import com.security.core.authentication.sms.SmsAuthenticationFilter;
-import com.security.core.authentication.sms.SmsAuthenticationProvider;
-import com.security.core.authentication.sms.UsernameAuthenticationFilter;
+import com.security.core.authentication.usernameonly.UsernameAuthenticationFilter;
+import com.security.core.authentication.usernameonly.UsernameOnlyAuthenticationProvider;
 import com.security.core.validatecode.ValidateCodeFilter;
 
-public class SmsConfigurerAdapter extends SecurityConfigurerAdapter<DefaultSecurityFilterChain,HttpSecurity> {
+public class UsernameOnlyConfigurerAdapter extends SecurityConfigurerAdapter<DefaultSecurityFilterChain,HttpSecurity> {
 
 	@Nullable
 	private AuthenticationSuccessHandler success;
@@ -30,7 +28,7 @@ public class SmsConfigurerAdapter extends SecurityConfigurerAdapter<DefaultSecur
     
     private Set<RequestMatcher> metchers;
 
-    public SmsConfigurerAdapter(AuthenticationSuccessHandler success, AuthenticationFailureHandler failer,
+    public UsernameOnlyConfigurerAdapter(AuthenticationSuccessHandler success, AuthenticationFailureHandler failer,
 			UserDetailsService user, Set<RequestMatcher> metchers) {
 		this.success = success;
 		this.failer = failer;
@@ -40,7 +38,6 @@ public class SmsConfigurerAdapter extends SecurityConfigurerAdapter<DefaultSecur
 
 	@Override
     public void configure(HttpSecurity builder) throws Exception {
-        //SmsAuthenticationFilter smsCodeAuthenticationFilter = new SmsAuthenticationFilter(loginUris);
 		UsernameAuthenticationFilter smsCodeAuthenticationFilter = new UsernameAuthenticationFilter(metchers);
         smsCodeAuthenticationFilter.setAuthenticationManager(builder.getSharedObject(AuthenticationManager.class));
         if (success != null) {
@@ -51,7 +48,7 @@ public class SmsConfigurerAdapter extends SecurityConfigurerAdapter<DefaultSecur
         	smsCodeAuthenticationFilter.setAuthenticationFailureHandler(failer);
         }
         
-        SmsAuthenticationProvider smsCodeAuthenticationProvider = new SmsAuthenticationProvider();
+        UsernameOnlyAuthenticationProvider smsCodeAuthenticationProvider = new UsernameOnlyAuthenticationProvider();
         smsCodeAuthenticationProvider.setUserDetailsService(user);
         builder.authenticationProvider(smsCodeAuthenticationProvider)
                .addFilterAfter(smsCodeAuthenticationFilter, ValidateCodeFilter.class)

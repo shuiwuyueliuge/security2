@@ -20,7 +20,7 @@ import com.security.core.config.LoginProperties;
 import com.security.core.config.LogoutProperties;
 import com.security.core.config.RememberMeProperties;
 import com.security.core.config.SessionProperties;
-import com.security.core.expand.SmsConfigurerAdapter;
+import com.security.core.expand.UsernameOnlyConfigurerAdapter;
 import com.security.core.expand.ValidateConfigurerAdapter;
 import com.security.core.request.RequestManager;
 
@@ -64,7 +64,7 @@ public class BrowserSecurityConfigurer extends WebSecurityConfigurerAdapter {
 	private ValidateConfigurerAdapter validateConfigurerAdapter;
 	
 	@Autowired(required = false)
-	private SmsConfigurerAdapter smsConfigurerAdapter;
+	private UsernameOnlyConfigurerAdapter smsConfigurerAdapter;
 	
 	@Autowired(required = false)
 	private SpringSocialConfigurer socialConfigurer;

@@ -12,7 +12,6 @@ import com.security.core.validatecode.VaildateCodeFailureHandler;
 import com.security.core.validatecode.ValidateCodeFilter;
 import com.security.core.validatecode.ValidateCodeGeneratorHolder;
 import com.security.core.validatecode.ValidateCodeManager;
-import static com.security.core.validatecode.ValidateCodeTypeEnum.*;
 import java.util.Set;
 import com.security.core.validatecode.simple.SimpleImgValidateCodeGenerator;
 import com.security.core.validatecode.simple.SimpleValidateCodeManager;
@@ -44,7 +43,7 @@ public class ValidateConfigurerAdapter extends SecurityConfigurerAdapter<Default
 
 	public void setHolder(ValidateCodeGeneratorHolder holder) {
 		if (holder.size() == 0) {
-			holder.addGenerator(new SimpleImgValidateCodeGenerator(validateCodeManager, "", IMG.getType()));
+			holder.addGenerator(new SimpleImgValidateCodeGenerator(validateCodeManager, "", "img"));
 		}
 		
 		this.requestMatcher = holder.toAntPathRequestMatcher();

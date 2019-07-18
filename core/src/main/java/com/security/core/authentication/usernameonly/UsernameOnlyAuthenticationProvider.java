@@ -1,4 +1,4 @@
-package com.security.core.authentication.sms;
+package com.security.core.authentication.usernameonly;
 
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
@@ -7,26 +7,26 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
-public class SmsAuthenticationProvider implements AuthenticationProvider {
+public class UsernameOnlyAuthenticationProvider implements AuthenticationProvider {
 
 	private UserDetailsService userDetailsService;
 
 	@Override
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-		SmsAuthenticationToken authenticationToken = (SmsAuthenticationToken) authentication;
+		UsernameOnlyAuthenticationToken authenticationToken = (UsernameOnlyAuthenticationToken) authentication;
 		UserDetails user = userDetailsService.loadUserByUsername((String) authenticationToken.getPrincipal());
 		if (user == null) {
 			throw new InternalAuthenticationServiceException("无法获取用户信息");
 		}
 
-		SmsAuthenticationToken authenticationResult = new SmsAuthenticationToken(user, user.getAuthorities());
+		UsernameOnlyAuthenticationToken authenticationResult = new UsernameOnlyAuthenticationToken(user, user.getAuthorities());
 		authenticationResult.setDetails(authenticationToken.getDetails());
 		return authenticationResult;
 	}
 
 	@Override
 	public boolean supports(Class<?> authentication) {
-		return SmsAuthenticationToken.class.isAssignableFrom(authentication);
+		return UsernameOnlyAuthenticationToken.class.isAssignableFrom(authentication);
 	}
 
 	public UserDetailsService getUserDetailsService() {

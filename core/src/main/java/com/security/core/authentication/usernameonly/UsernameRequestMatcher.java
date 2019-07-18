@@ -1,4 +1,4 @@
-package com.security.core.authentication.sms;
+package com.security.core.authentication.usernameonly;
 
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;

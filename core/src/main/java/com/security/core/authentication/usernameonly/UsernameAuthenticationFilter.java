@@ -1,4 +1,4 @@
-package com.security.core.authentication.sms;
+package com.security.core.authentication.usernameonly;
 
 import java.io.IOException;
 import java.util.Set;
@@ -187,7 +187,7 @@ public class UsernameAuthenticationFilter extends GenericFilterBean
 		}
 
 		usernameValue = usernameValue.trim();
-		SmsAuthenticationToken authRequest = new SmsAuthenticationToken(usernameValue);
+		UsernameOnlyAuthenticationToken authRequest = new UsernameOnlyAuthenticationToken(usernameValue);
 		setDetails(request, authRequest);
 		return this.getAuthenticationManager().authenticate(authRequest);
 		
@@ -351,7 +351,7 @@ public class UsernameAuthenticationFilter extends GenericFilterBean
 		return failureHandler;
 	}
 	
-	protected void setDetails(HttpServletRequest request, SmsAuthenticationToken authRequest) {
+	protected void setDetails(HttpServletRequest request, UsernameOnlyAuthenticationToken authRequest) {
 		authRequest.setDetails(authenticationDetailsSource.buildDetails(request));
 	}
 	

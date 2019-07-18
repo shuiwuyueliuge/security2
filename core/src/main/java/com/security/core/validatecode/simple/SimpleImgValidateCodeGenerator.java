@@ -3,8 +3,8 @@ package com.security.core.validatecode.simple;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import com.security.core.exception.SendCodeException;
-import com.security.core.utils.ImgCodeUtil;
-import com.security.core.utils.RandomUtil;
+import com.security.core.util.ImgCodeUtil;
+import com.security.core.util.RandomUtil;
 import com.security.core.validatecode.InMemoryValidateCodeGenerator;
 import com.security.core.validatecode.ValidateCodeManager;
 
