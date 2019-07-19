@@ -20,7 +20,7 @@ public class App {
 
 	@Bean
 	public ValidateCodeGenerator img2() {
-		return new SimpleImgValidateCodeGenerator(new SimpleValidateCodeManager(), "/login", "img3");
+		return new SimpleImgValidateCodeGenerator("/login", "img3");
 	}
 
 	@Bean
@@ -32,6 +32,11 @@ public class App {
 
 	@Bean
 	public ValidateCodeGenerator s() {
-		return new A("/login/sms", "key", "sms");
+		return new A("/login", "key", "sms");
+	}
+	
+	@Bean
+	public ValidateCodeGenerator s2() {
+		return new A("/login/email", "key", "email");
 	}
 }

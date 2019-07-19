@@ -8,11 +8,11 @@ public interface ValidateCodeGenerator {
 
 	String generateAndSend(String key, HttpServletRequest request, HttpServletResponse response) throws SendCodeException;
 
-    boolean check(String key, String value);
+    //boolean check(String key, String value);
     
-    String getLoginUri();
+   // String getLoginUri();
     
-    String getUsername();
+    //String getUsername();
     
     String getCodeType();
     

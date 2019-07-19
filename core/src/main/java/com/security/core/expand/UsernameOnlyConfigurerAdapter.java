@@ -12,6 +12,7 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 
+import com.security.core.authentication.usernameonly.SmsAuthenticationFilter;
 import com.security.core.authentication.usernameonly.UsernameAuthenticationFilter;
 import com.security.core.authentication.usernameonly.UsernameOnlyAuthenticationProvider;
 import com.security.core.validatecode.ValidateCodeFilter;
@@ -26,20 +27,26 @@ public class UsernameOnlyConfigurerAdapter extends SecurityConfigurerAdapter<Def
     
     private UserDetailsService user;
     
-    private Set<RequestMatcher> metchers;
+    //private Set<RequestMatcher> metchers;
+    
+    private String username;
+    
+    private String loginProcessingUrl;
 
     public UsernameOnlyConfigurerAdapter(AuthenticationSuccessHandler success, AuthenticationFailureHandler failer,
-			UserDetailsService user, Set<RequestMatcher> metchers) {
+			UserDetailsService user, String loginProcessingUrl, String username) {
 		this.success = success;
 		this.failer = failer;
 		this.user = user;
-		this.metchers = metchers;
+		this.username = username;
+		this.loginProcessingUrl = loginProcessingUrl;
 	}
 
 	@Override
     public void configure(HttpSecurity builder) throws Exception {
-		UsernameAuthenticationFilter smsCodeAuthenticationFilter = new UsernameAuthenticationFilter(metchers);
-        smsCodeAuthenticationFilter.setAuthenticationManager(builder.getSharedObject(AuthenticationManager.class));
+		//UsernameAuthenticationFilter smsCodeAuthenticationFilter = new UsernameAuthenticationFilter(metchers);
+        SmsAuthenticationFilter smsCodeAuthenticationFilter = new SmsAuthenticationFilter(username, loginProcessingUrl);
+		smsCodeAuthenticationFilter.setAuthenticationManager(builder.getSharedObject(AuthenticationManager.class));
         if (success != null) {
         	smsCodeAuthenticationFilter.setAuthenticationSuccessHandler(success);
         }

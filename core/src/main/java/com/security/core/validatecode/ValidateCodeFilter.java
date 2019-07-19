@@ -1,7 +1,7 @@
 package com.security.core.validatecode;
 
 import java.io.IOException;
-import java.util.Set;
+//import java.util.Set;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -15,11 +15,11 @@ import com.security.core.exception.ValidateCodeException;
 
 public class ValidateCodeFilter extends OncePerRequestFilter {
 	
-	private ValidateCodeGeneratorHolder holder;
+	private ValidateCodeManager manager;
 	
 	private VaildateCodeFailureHandler failureHandler;
 	
-	private Set<RequestMatcher> requestMatcher;
+	private RequestMatcher requestMatcher;
 	
 	private String keyParameter;
 	
@@ -27,8 +27,8 @@ public class ValidateCodeFilter extends OncePerRequestFilter {
 	
 	private final Log logger = LogFactory.getLog(getClass());
 	
-	public ValidateCodeFilter(ValidateCodeGeneratorHolder holder, VaildateCodeFailureHandler failureHandler, Set<RequestMatcher> requestMatcher, ValidateCodeProperties validateCodeProperties) {
-		this.holder = holder;
+	public ValidateCodeFilter( ValidateCodeManager manager, VaildateCodeFailureHandler failureHandler, RequestMatcher requestMatcher, ValidateCodeProperties validateCodeProperties) {
+		this.manager = manager;
 		this.failureHandler = failureHandler;
 		this.requestMatcher = requestMatcher;
 		if (validateCodeProperties != null) {
@@ -55,13 +55,13 @@ public class ValidateCodeFilter extends OncePerRequestFilter {
 		String uri = getRequestURI(request);
 		if (matches(request)) {
 			logger.debug("验证码登陆url [" + 	uri + "]");
-			ValidateCodeGenerator generator = holder.getGeneratorByUri(uri);
-		    if (generator == null) {
-		    	logger.debug("验证码登陆url [" + uri + "]错误");
-		    	return false;
-		    }
+//			ValidateCodeGenerator generator = holder.getGeneratorByUri(uri);
+//		    if (generator == null) {
+//		    	logger.debug("验证码登陆url [" + uri + "]错误");
+//		    	return false;
+//		    }
 		    
-		    if (!generator.check(getParameter(request, keyParameter), getParameter(request, valueParameter))) {
+		    if (!manager.check(getParameter(request, keyParameter), getParameter(request, valueParameter))) {
 		    	logger.debug("验证码登陆url [" + uri + "]验证码验证失败");
 		    	return false;
 		    }
@@ -79,11 +79,11 @@ public class ValidateCodeFilter extends OncePerRequestFilter {
 	}
 	
 	private boolean matches(HttpServletRequest request) {
-		for (RequestMatcher antPathRequestMatcher : requestMatcher) {
-			if (antPathRequestMatcher.matches(request)) {
+		//for (RequestMatcher antPathRequestMatcher : requestMatcher) {
+			if (requestMatcher.matches(request)) {
 				return true;
 			}
-		}
+		//}
 		
 		return false;
 	}

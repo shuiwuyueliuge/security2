@@ -13,6 +13,10 @@ public class SimpleImgValidateCodeGenerator extends InMemoryValidateCodeGenerato
 	public SimpleImgValidateCodeGenerator(ValidateCodeManager manager, String uri, String ValidateCodeType) {
 		super(manager, uri, ValidateCodeType);
 	}
+	
+	public SimpleImgValidateCodeGenerator(String uri, String ValidateCodeType) {
+		super(new SimpleValidateCodeManager(), uri, ValidateCodeType);
+	}
 
 	@Override
 	protected String send(String key, String code, HttpServletResponse response) throws SendCodeException {

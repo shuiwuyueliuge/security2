@@ -56,12 +56,12 @@ public abstract class InMemoryValidateCodeGenerator implements ValidateCodeGener
 		return result;
 	}
 
-	@Override
-	public boolean check(String key, String value) {
-		String cached = manager.get(key);
-		manager.remove(key);
-		return value.equals(cached) ? true : false;
-	}
+//	@Override
+//	public boolean check(String key, String value) {
+//		String cached = manager.get(key);
+//		manager.remove(key);
+//		return value.equals(cached) ? true : false;
+//	}
 
 	protected abstract String send(String key, String code, HttpServletResponse response) throws SendCodeException;
 

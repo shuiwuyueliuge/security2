@@ -6,23 +6,23 @@ import com.security.core.exception.SendCodeException;
 
 public abstract class DefaultValidateCodeGenerator implements ValidateCodeGenerator {
 	
-	private String loginUri;
+	//private String loginUri;
 	
-	private String username;
+	//private String username;
 	
 	private String validateCodeType;
 	
 	private boolean usernameOnly;
 	
 	public DefaultValidateCodeGenerator(String loginUri, String username, String validateCodeType) {
-		this.loginUri = loginUri;
-		this.username = username;
+		//this.loginUri = loginUri;
+		//this.username = username;
 		this.validateCodeType = validateCodeType;
 		this.usernameOnly = true;
 	}
 	
 	public DefaultValidateCodeGenerator(String loginUri, String validateCodeType) {
-		this.loginUri = loginUri;
+		//this.loginUri = loginUri;
 		this.validateCodeType = validateCodeType;
 		this.usernameOnly = false;
 	}
@@ -34,25 +34,25 @@ public abstract class DefaultValidateCodeGenerator implements ValidateCodeGenera
 		return result;
 	}
 	
-	@Override
-	public boolean check(String key, String value) {
-		String cached = getCached(key);
-		return value.equals(cached) ? true : false;
-	}
+//	@Override
+//	public boolean check(String key, String value) {
+//		String cached = getCached(key);
+//		return value.equals(cached) ? true : false;
+//	}
 	
 	protected abstract String send(String key, String code, HttpServletResponse response) throws SendCodeException;
 	
 	protected abstract String generate(String key, HttpServletRequest request);
 	
-	protected abstract String getCached(String key);
+	//protected abstract String getCached(String key);
 
-	public String getLoginUri() {
-		return loginUri;
-	}
+	//public String getLoginUri() {
+		//return loginUri;
+	//}
 
-	public String getUsername() {
-		return username;
-	}
+	//public String getUsername() {
+		//return username;
+	//}
 	
 	public String getCodeType() {
 		return validateCodeType;

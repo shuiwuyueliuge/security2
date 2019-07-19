@@ -12,20 +12,30 @@ public class SimpleValidateCodeManager implements ValidateCodeManager {
 	static {
 		cacheMap = Collections.synchronizedMap(new WeakHashMap<String, String>());
 	}
+	
+	public static ValidateCodeManager getInstance() {
+		return ManagerEnum.SINGLETON.simpleValidateCodeManager;
+	}
 
 	@Override
 	public String save(String key, String code) {
 		cacheMap.put(key, code);
 		return code;
 	}
-
+	
 	@Override
-	public String get(String key) {
-		return cacheMap.get(key);
+	public boolean check(String key, String code) {
+		String cached = cacheMap.remove(key);
+		return code.equals(cached);
 	}
-
-	@Override
-	public String remove(String key) {
-		return cacheMap.remove(key);
+	
+	private enum ManagerEnum {
+		SINGLETON;
+		
+		private SimpleValidateCodeManager simpleValidateCodeManager;
+		
+		private ManagerEnum() {
+			this.simpleValidateCodeManager = new SimpleValidateCodeManager();
+		}
 	}
 }

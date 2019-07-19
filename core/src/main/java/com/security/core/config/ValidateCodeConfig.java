@@ -45,20 +45,25 @@ public class ValidateCodeConfig {
 	@Bean
 	public ValidateConfigurerAdapter validateConfigurerAdapter(ValidateCodeGeneratorHolder holder) {
 		ValidateConfigurerAdapter adapter = new ValidateConfigurerAdapter();
+		adapter.setLoginPage(loginProperties);
 		adapter.setHolder(holder);
 		adapter.setValidateCodeManager(validateCodeManager);
-		adapter.setLoginPage(loginProperties);
+		
 		adapter.setFailHandler(failHandler);
 		adapter.setValidateCodeProperties(validateCodeProperties);
 		return adapter;
 	}
 	
 	@Bean
-	public UsernameOnlyConfigurerAdapter smsConfigurerAdapter(UserDetailsService user, ValidateCodeGeneratorHolder holder) {	
+	public UsernameOnlyConfigurerAdapter smsConfigurerAdapter(UserDetailsService user) {	
 //		if (generator != null) {
 //			return new SmsConfigurerAdapter(success, failer, user, generator.getLoginUri());
 //		}
 //		
-		return new UsernameOnlyConfigurerAdapter(success, failer, user, holder.toUsernameRequestMatcher());
+		if (loginProperties != null) {
+			return new UsernameOnlyConfigurerAdapter(success, failer, user, loginProperties.getProcessingUrl(), loginProperties.getUsernameParameter());
+		}
+		
+		return new UsernameOnlyConfigurerAdapter(success, failer, user, "/login", "username");
 	}
 }
