@@ -1,7 +1,7 @@
 package com.security.core.validatecode;
 
 import java.io.IOException;
-//import java.util.Set;
+import java.util.Set;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -19,7 +19,9 @@ public class ValidateCodeFilter extends OncePerRequestFilter {
 	
 	private VaildateCodeFailureHandler failureHandler;
 	
-	private RequestMatcher requestMatcher;
+	private Set<RequestMatcher> requestMatcher;
+	
+	private String smsKeyParameter;
 	
 	private String keyParameter;
 	
@@ -27,18 +29,13 @@ public class ValidateCodeFilter extends OncePerRequestFilter {
 	
 	private final Log logger = LogFactory.getLog(getClass());
 	
-	public ValidateCodeFilter( ValidateCodeManager manager, VaildateCodeFailureHandler failureHandler, RequestMatcher requestMatcher, ValidateCodeProperties validateCodeProperties) {
+	public ValidateCodeFilter(ValidateCodeManager manager, VaildateCodeFailureHandler failureHandler, Set<RequestMatcher> requestMatcher, ValidateCodeProperties validateCodeProperties, String smsKeyParameter) {
 		this.manager = manager;
 		this.failureHandler = failureHandler;
 		this.requestMatcher = requestMatcher;
-		if (validateCodeProperties != null) {
-			this.keyParameter = validateCodeProperties.getKeyParameter();
-			this.valueParameter = validateCodeProperties.getValueParameter();
-			return;
-		}
-		
-		this.keyParameter = "key";
-		this.valueParameter = "code";
+		this.keyParameter = validateCodeProperties.getKeyParameter();
+		this.valueParameter = validateCodeProperties.getValueParameter();
+		this.smsKeyParameter = smsKeyParameter;
 	}
 
 	@Override
@@ -55,13 +52,7 @@ public class ValidateCodeFilter extends OncePerRequestFilter {
 		String uri = getRequestURI(request);
 		if (matches(request)) {
 			logger.debug("验证码登陆url [" + 	uri + "]");
-//			ValidateCodeGenerator generator = holder.getGeneratorByUri(uri);
-//		    if (generator == null) {
-//		    	logger.debug("验证码登陆url [" + uri + "]错误");
-//		    	return false;
-//		    }
-		    
-		    if (!manager.check(getParameter(request, keyParameter), getParameter(request, valueParameter))) {
+		    if (!manager.check(getParameter(request), getValueParameter(request))) {
 		    	logger.debug("验证码登陆url [" + uri + "]验证码验证失败");
 		    	return false;
 		    }
@@ -74,16 +65,25 @@ public class ValidateCodeFilter extends OncePerRequestFilter {
 		return request.getRequestURI();
 	}
 	
-	private String getParameter(HttpServletRequest request, String key) {
-		return request.getParameter(key);
+	private String getParameter(HttpServletRequest request) {
+		String parameter = request.getParameter(keyParameter);
+		if (parameter == null) {
+			parameter = request.getParameter(smsKeyParameter);
+		}
+		
+		return parameter;
+	}
+	
+	private String getValueParameter(HttpServletRequest request) {
+		return request.getParameter(valueParameter);
 	}
 	
 	private boolean matches(HttpServletRequest request) {
-		//for (RequestMatcher antPathRequestMatcher : requestMatcher) {
-			if (requestMatcher.matches(request)) {
+		for (RequestMatcher antPathRequestMatcher : requestMatcher) {
+			if (antPathRequestMatcher.matches(request)) {
 				return true;
 			}
-		//}
+		}
 		
 		return false;
 	}

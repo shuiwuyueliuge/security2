@@ -14,8 +14,8 @@ public class SmsAuthenticationFilter extends AbstractAuthenticationProcessingFil
 	private String mobile;
 	private boolean postOnly = true;
 
-	public SmsAuthenticationFilter(String mobile, String loginUrl) {
-		super(new AntPathRequestMatcher(loginUrl, "POST"));
+	public SmsAuthenticationFilter(String processingUrl, String mobile) {
+		super(new AntPathRequestMatcher(processingUrl, "POST"));
 		this.mobile = mobile;
 	}
 
@@ -31,7 +31,7 @@ public class SmsAuthenticationFilter extends AbstractAuthenticationProcessingFil
 		}
 
 		mobile = mobile.trim();
-		UsernameOnlyAuthenticationToken authRequest = new UsernameOnlyAuthenticationToken(mobile);
+		SmsAuthenticationToken authRequest = new SmsAuthenticationToken(mobile);
 		setDetails(request, authRequest);
 		return this.getAuthenticationManager().authenticate(authRequest);
 	}
@@ -40,7 +40,7 @@ public class SmsAuthenticationFilter extends AbstractAuthenticationProcessingFil
 		return request.getParameter(mobile);
 	}
 
-	protected void setDetails(HttpServletRequest request, UsernameOnlyAuthenticationToken authRequest) {
+	protected void setDetails(HttpServletRequest request, SmsAuthenticationToken authRequest) {
 		authRequest.setDetails(authenticationDetailsSource.buildDetails(request));
 	}
 	

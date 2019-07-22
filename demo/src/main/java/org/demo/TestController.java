@@ -23,7 +23,7 @@ public class TestController {
 	    providerSignInUtils.doPostSignUp("1234", new ServletWebRequest(request));
 	    try {
 	    	request.getSession().setAttribute("name", conn.getDisplayName());
-			response.sendRedirect("/index.html");
+			response.sendRedirect("http://www.baidu.com");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

@@ -6,6 +6,7 @@ import org.springframework.security.config.annotation.web.configurers.Expression
 
 import com.security.core.config.LoginProperties;
 import com.security.core.config.LogoutProperties;
+import com.security.core.config.SmsProperties;
 import com.security.core.request.RequestProvider;
 
 public class BrowserRequestProvider implements RequestProvider {
@@ -14,7 +15,10 @@ public class BrowserRequestProvider implements RequestProvider {
 	private LoginProperties loginProperties;
 	
 	@Autowired(required = false)
-	private LogoutProperties logoutProperties; 
+	private LogoutProperties logoutProperties;
+	
+	@Autowired(required = false)
+	private SmsProperties smsProperties;
 
 	@Override
 	public void config(ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry registry) {
@@ -24,6 +28,12 @@ public class BrowserRequestProvider implements RequestProvider {
 		
 		if (logoutProperties != null) {
 			registry.antMatchers(logoutProperties.getUrl()).permitAll();
+		}
+		
+		if (smsProperties != null) {
+			registry.antMatchers(smsProperties.getProcessingUrl()).permitAll();
+		} else {
+			registry.antMatchers("/login/sms").permitAll();
 		}
 	}
 }

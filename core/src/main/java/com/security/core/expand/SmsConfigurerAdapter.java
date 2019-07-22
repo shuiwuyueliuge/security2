@@ -1,6 +1,5 @@
 package com.security.core.expand;
 
-import java.util.Set;
 import org.springframework.lang.Nullable;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.SecurityConfigurerAdapter;
@@ -10,14 +9,11 @@ import org.springframework.security.web.DefaultSecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.util.matcher.RequestMatcher;
-
 import com.security.core.authentication.usernameonly.SmsAuthenticationFilter;
-import com.security.core.authentication.usernameonly.UsernameAuthenticationFilter;
-import com.security.core.authentication.usernameonly.UsernameOnlyAuthenticationProvider;
+import com.security.core.authentication.usernameonly.SmsAuthenticationProvider;
 import com.security.core.validatecode.ValidateCodeFilter;
 
-public class UsernameOnlyConfigurerAdapter extends SecurityConfigurerAdapter<DefaultSecurityFilterChain,HttpSecurity> {
+public class SmsConfigurerAdapter extends SecurityConfigurerAdapter<DefaultSecurityFilterChain,HttpSecurity> {
 
 	@Nullable
 	private AuthenticationSuccessHandler success;
@@ -27,25 +23,22 @@ public class UsernameOnlyConfigurerAdapter extends SecurityConfigurerAdapter<Def
     
     private UserDetailsService user;
     
-    //private Set<RequestMatcher> metchers;
+    private String smsProcessUrl;
     
-    private String username;
-    
-    private String loginProcessingUrl;
+    private String mobile;
 
-    public UsernameOnlyConfigurerAdapter(AuthenticationSuccessHandler success, AuthenticationFailureHandler failer,
-			UserDetailsService user, String loginProcessingUrl, String username) {
+    public SmsConfigurerAdapter(AuthenticationSuccessHandler success, AuthenticationFailureHandler failer,
+			UserDetailsService user, String smsProcessUrl, String mobile) {
 		this.success = success;
 		this.failer = failer;
 		this.user = user;
-		this.username = username;
-		this.loginProcessingUrl = loginProcessingUrl;
+		this.mobile = mobile;
+		this.smsProcessUrl = smsProcessUrl;
 	}
 
 	@Override
     public void configure(HttpSecurity builder) throws Exception {
-		//UsernameAuthenticationFilter smsCodeAuthenticationFilter = new UsernameAuthenticationFilter(metchers);
-        SmsAuthenticationFilter smsCodeAuthenticationFilter = new SmsAuthenticationFilter(username, loginProcessingUrl);
+        SmsAuthenticationFilter smsCodeAuthenticationFilter = new SmsAuthenticationFilter(smsProcessUrl, mobile);
 		smsCodeAuthenticationFilter.setAuthenticationManager(builder.getSharedObject(AuthenticationManager.class));
         if (success != null) {
         	smsCodeAuthenticationFilter.setAuthenticationSuccessHandler(success);
@@ -55,7 +48,7 @@ public class UsernameOnlyConfigurerAdapter extends SecurityConfigurerAdapter<Def
         	smsCodeAuthenticationFilter.setAuthenticationFailureHandler(failer);
         }
         
-        UsernameOnlyAuthenticationProvider smsCodeAuthenticationProvider = new UsernameOnlyAuthenticationProvider();
+        SmsAuthenticationProvider smsCodeAuthenticationProvider = new SmsAuthenticationProvider();
         smsCodeAuthenticationProvider.setUserDetailsService(user);
         builder.authenticationProvider(smsCodeAuthenticationProvider)
                .addFilterAfter(smsCodeAuthenticationFilter, ValidateCodeFilter.class)

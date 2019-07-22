@@ -5,17 +5,12 @@ import javax.servlet.http.HttpServletResponse;
 import com.security.core.exception.SendCodeException;
 import com.security.core.util.ImgCodeUtil;
 import com.security.core.util.RandomUtil;
-import com.security.core.validatecode.InMemoryValidateCodeGenerator;
-import com.security.core.validatecode.ValidateCodeManager;
+import com.security.core.validatecode.LocalCacheValidateCodeGenerator;
 
-public class SimpleImgValidateCodeGenerator extends InMemoryValidateCodeGenerator {
-
-	public SimpleImgValidateCodeGenerator(ValidateCodeManager manager, String uri, String ValidateCodeType) {
-		super(manager, uri, ValidateCodeType);
-	}
+public class SimpleImgValidateCodeGenerator extends LocalCacheValidateCodeGenerator {
 	
-	public SimpleImgValidateCodeGenerator(String uri, String ValidateCodeType) {
-		super(new SimpleValidateCodeManager(), uri, ValidateCodeType);
+	public SimpleImgValidateCodeGenerator(String validateCodeType) {
+		super(validateCodeType);
 	}
 
 	@Override

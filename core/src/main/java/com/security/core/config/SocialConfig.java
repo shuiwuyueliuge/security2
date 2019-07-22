@@ -1,8 +1,10 @@
 package com.security.core.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.social.connect.ConnectionFactoryLocator;
 import org.springframework.social.connect.ConnectionRepository;
 import org.springframework.social.connect.UsersConnectionRepository;
@@ -19,12 +21,12 @@ public class SocialConfig {
 	@Value("${security.social.signup-url}")
 	private String signupUrl;
 	
+	@Autowired(required = false)
+	private AuthenticationSuccessHandler successHandler;
+	
 	@Bean
 	public SpringSocialConfigurer socialSecurityConfig() {
-		SocialConfigAdapter springSocialConfigurer = new SocialConfigAdapter((request, response, authentication) -> {
-			
-		});
-		
+		SocialConfigAdapter springSocialConfigurer = new SocialConfigAdapter(successHandler);
 		springSocialConfigurer.signupUrl(signupUrl);
 		return springSocialConfigurer;
 	}

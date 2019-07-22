@@ -21,38 +21,46 @@ public class AutoConfig {
 
 	@Bean
 	@ConfigurationProperties(prefix = "security.login")
-	@ConditionalOnProperty(prefix = "security.login", name = { "page", "processing-url", "username-parameter", "password-parameter" })
+	@ConditionalOnProperty(prefix = "security.login", name = { "page", "processing-url", "username-parameter",
+			"password-parameter" })
 	public LoginProperties loginProperties() {
 		return new LoginProperties();
 	}
-	
+
 	@Bean
 	@ConfigurationProperties(prefix = "security.code")
 	@ConditionalOnProperty(prefix = "security.code", name = { "key-parameter", "value-parameter" })
 	public ValidateCodeProperties validateCodeProperties() {
 		return new ValidateCodeProperties();
 	}
-	
+
 	@Bean
 	@ConfigurationProperties(prefix = "security.logout")
 	@ConditionalOnProperty(prefix = "security.logout", name = "url")
 	public LogoutProperties logoutProperties() {
 		return new LogoutProperties();
 	}
-	
+
+	@Bean
+	@ConfigurationProperties(prefix = "security.sms")
+	@ConditionalOnProperty(prefix = "security.sms", name = { "processing-url", "mobile" })
+	public SmsProperties smsProperties() {
+		return new SmsProperties();
+	}
+
 	@Bean
 	@ConfigurationProperties(prefix = "security.session")
 	public SessionProperties sessionProperties() {
 		return new SessionProperties();
 	}
-	
+
 	@Bean
 	@ConfigurationProperties(prefix = "security.remember-me")
 	@ConditionalOnProperty(prefix = "security.remember-me", name = "token-validity-seconds")
 	public RememberMeProperties rememberMeProperties() {
 		return new RememberMeProperties();
 	}
-	
+
 	@Bean
 	@ConditionalOnBean(RememberMeProperties.class)
 	public PersistentTokenRepository persistentTokenRepository(DataSource dataSource) {

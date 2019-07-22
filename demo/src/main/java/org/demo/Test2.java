@@ -16,6 +16,7 @@ public class Test2 extends AbstractView {
 			HttpServletResponse response) throws Exception {
 		if (!(boolean)model.get("success")) {
 			response.getOutputStream().write("error".getBytes());
+			return;
 		}
 		
 		response.getOutputStream().write("send success".getBytes());
