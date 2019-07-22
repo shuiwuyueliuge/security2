@@ -1,7 +1,6 @@
 package com.security.core.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
@@ -18,16 +17,18 @@ import com.security.core.social.controller.SocialConnectController;
 
 public class SocialConfig {
 	
-	@Value("${security.social.signup-url}")
-	private String signupUrl;
-	
 	@Autowired(required = false)
-	private AuthenticationSuccessHandler successHandler;
+	private SocialProperties socialProperties;
 	
 	@Bean
-	public SpringSocialConfigurer socialSecurityConfig() {
+	public SpringSocialConfigurer socialSecurityConfig(AuthenticationSuccessHandler successHandler) {
 		SocialConfigAdapter springSocialConfigurer = new SocialConfigAdapter(successHandler);
-		springSocialConfigurer.signupUrl(signupUrl);
+		if (socialProperties == null) {
+			springSocialConfigurer.signupUrl("/index.html");
+		} else {
+			springSocialConfigurer.signupUrl(socialProperties.getSignupUrl());
+		}
+		
 		return springSocialConfigurer;
 	}
 

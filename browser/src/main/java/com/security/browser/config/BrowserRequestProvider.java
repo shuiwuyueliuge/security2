@@ -35,5 +35,7 @@ public class BrowserRequestProvider implements RequestProvider {
 		} else {
 			registry.antMatchers("/login/sms").permitAll();
 		}
+		
+		registry.antMatchers("/connect/**").permitAll();
 	}
 }

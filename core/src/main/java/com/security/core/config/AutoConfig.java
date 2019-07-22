@@ -47,6 +47,13 @@ public class AutoConfig {
 	public SmsProperties smsProperties() {
 		return new SmsProperties();
 	}
+	
+	@Bean
+	@ConfigurationProperties(prefix = "security.social")
+	@ConditionalOnProperty(prefix = "security.social", name = { "signup-url" })
+	public SocialProperties socialProperties() {
+		return new SocialProperties();
+	}
 
 	@Bean
 	@ConfigurationProperties(prefix = "security.session")
