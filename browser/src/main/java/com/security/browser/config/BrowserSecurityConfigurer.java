@@ -1,6 +1,7 @@
 package com.security.browser.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -8,6 +9,7 @@ import org.springframework.security.config.annotation.web.configurers.FormLoginC
 import org.springframework.security.config.annotation.web.configurers.LogoutConfigurer;
 import org.springframework.security.config.annotation.web.configurers.SessionManagementConfigurer;
 import org.springframework.security.config.annotation.web.configurers.SessionManagementConfigurer.ConcurrencyControlConfigurer;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
@@ -69,6 +71,9 @@ public class BrowserSecurityConfigurer extends WebSecurityConfigurerAdapter {
 	@Autowired(required = false)
 	private SpringSocialConfigurer socialConfigurer;
 	
+	@Autowired
+	private UserDetailsService userDetailsService;
+	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		requestManager.config(http.authorizeRequests());
@@ -88,6 +93,11 @@ public class BrowserSecurityConfigurer extends WebSecurityConfigurerAdapter {
 		if (socialConfigurer != null) {
 			http.apply(socialConfigurer);
 		}
+	}
+	
+	@Override
+	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+		auth.userDetailsService(userDetailsService);
 	}
 	
 	private void rememberMeConfigure(HttpSecurity http) throws Exception {

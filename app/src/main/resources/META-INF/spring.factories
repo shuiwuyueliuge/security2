@@ -1,0 +1,4 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.securityframework.app.config.AppSecurityConfigurer,\
+com.securityframework.app.config.ResourceConfig,\
+com.securityframework.app.config.AuthConfig
