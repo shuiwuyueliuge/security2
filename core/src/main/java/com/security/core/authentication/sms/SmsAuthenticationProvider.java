@@ -1,4 +1,4 @@
-package com.security.core.authentication.usernameonly;
+package com.security.core.authentication.sms;
 
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;

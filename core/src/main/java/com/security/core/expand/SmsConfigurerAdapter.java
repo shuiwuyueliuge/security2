@@ -9,8 +9,9 @@ import org.springframework.security.web.DefaultSecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import com.security.core.authentication.usernameonly.SmsAuthenticationFilter;
-import com.security.core.authentication.usernameonly.SmsAuthenticationProvider;
+
+import com.security.core.authentication.sms.SmsAuthenticationFilter;
+import com.security.core.authentication.sms.SmsAuthenticationProvider;
 import com.security.core.validatecode.ValidateCodeFilter;
 
 public class SmsConfigurerAdapter extends SecurityConfigurerAdapter<DefaultSecurityFilterChain,HttpSecurity> {

@@ -1,4 +1,4 @@
-package com.security.core.authentication.usernameonly;
+package com.security.core.authentication.sms;
 
 import java.util.Collection;
 import org.springframework.security.authentication.AbstractAuthenticationToken;

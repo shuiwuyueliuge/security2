@@ -1,4 +1,4 @@
-package com.security.core.authentication.usernameonly;
+package com.security.core.authentication.sms;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
