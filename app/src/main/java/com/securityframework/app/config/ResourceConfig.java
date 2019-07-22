@@ -4,22 +4,26 @@ import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.access.AccessDeniedHandler;
+
 import com.security.core.request.RequestManager;
 
+@EnableWebSecurity
 @EnableResourceServer
 public class ResourceConfig extends ResourceServerConfigurerAdapter {
 
-	//@Autowired
-	//private RequestManager requestManager;
+	@Autowired
+	private RequestManager requestManager;
 
 	@Override
 	public void configure(HttpSecurity http) throws Exception {
@@ -45,6 +49,6 @@ public class ResourceConfig extends ResourceServerConfigurerAdapter {
 			
 		});
 		
-		//requestManager.config(http.authorizeRequests());
+		requestManager.config(http.authorizeRequests());
 	}
 }
